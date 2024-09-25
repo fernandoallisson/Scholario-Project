@@ -1,5 +1,12 @@
 package com.scholario.scholario_demo.dto.user;
 
-public record UserCreationDto() {
+import com.scholario.scholario_demo.entiity.User;
 
+public record UserCreationDto(
+    String name, String email, String password, String role, String phone, String address
+) {
+
+  public User toEntity() {
+    return new User(name, email, password, role, phone, address);
+  }
 }
