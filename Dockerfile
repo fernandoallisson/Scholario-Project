@@ -2,10 +2,11 @@
 FROM maven:3.8.5-eclipse-temurin-17 AS builder
 LABEL authors="fernando-alisson"
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src .
+COPY . .
 RUN mvn clean package -DskipTests
+
+# Verificar o arquivos gerados
+RUN ls -l /app/target
 
 # 2º Estágio - Running
 FROM eclipse-temurin:17-jre-jammy
