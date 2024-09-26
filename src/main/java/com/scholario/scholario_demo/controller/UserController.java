@@ -60,7 +60,8 @@ public class UserController {
     );
   }
   @DeleteMapping("/{id}")
-  public void deleteUserById(@PathVariable Long id) {
+  public String deleteUserById(@PathVariable Long id) {
     userService.deleteUserById(id);
+    return "Usuário de ID: " + id + " foi removido da base de dados";
   }
 }

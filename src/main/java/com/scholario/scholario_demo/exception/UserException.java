@@ -8,7 +8,7 @@ public class UserException extends RuntimeException {
   }
   // Construtor específico para erro de "Not Found"
   public static UserException notFound(String resourceName, Object resourceId) {
-    return new UserException(resourceName + "with ID" + resourceId + "not found");
+    return new UserException(resourceName + " with ID " + resourceId + " not found");
   }
 
   // Construtor específico para erro de "Unauthorized"
