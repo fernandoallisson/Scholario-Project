@@ -7,9 +7,9 @@ public record StudentDto(Long id, Long enrollmentNumber, String birthdate, Strin
   public static StudentDto fromEntity(Student student) {
     return new StudentDto(
         student.getId(),
-        student.getEnrollment_number(),
+        student.getEnrollment(),
         student.getBirthdate(),
-        student.getGuardianName(),
+        student.getGuardianCellPhone(),
         student.getGuardianCellPhone()
     );
   }

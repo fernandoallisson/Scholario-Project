@@ -4,58 +4,33 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
-public class Student {
+public class Student extends User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  private Long enrollmentNumber;
-  private String birthdate;
+  private Long enrollment;
   private String guardianName;
   private String guardianCellPhone;
 
-  @OneToOne(optional = false)
-  @JoinColumn(name = "user_id")
-  private User user;
+  public Student(){}
 
-  public Student() {
-  }
-
-  public Student(Long enrollment_number, String birthdate, String guardianName,
+  public Student(String name, String email, String password, String role, String phone,
+      String address, String birthdate, Long enrollment, String guardianName,
       String guardianCellPhone) {
-    this.enrollmentNumber = enrollment_number;
-    this.birthdate = birthdate;
+    super(name, email, password, role, phone, address, birthdate);
+    this.enrollment = enrollment;
     this.guardianName = guardianName;
     this.guardianCellPhone = guardianCellPhone;
   }
 
-  public Long getId() {
-    return id;
+   public Long getEnrollment() {
+    return enrollment;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Long getEnrollment_number() {
-    return enrollmentNumber;
-  }
-
-  public void setEnrollment_number(Long enrollment_number) {
-    this.enrollmentNumber = enrollment_number;
-  }
-
-  public String getBirthdate() {
-    return birthdate;
-  }
-
-  public void setBirthdate(String birthdate) {
-    this.birthdate = birthdate;
+  public void setEnrollment(Long enrollment) {
+    this.enrollment = enrollment;
   }
 
   public String getGuardianName() {
@@ -72,13 +47,5 @@ public class Student {
 
   public void setGuardianCellPhone(String guardianCellPhone) {
     this.guardianCellPhone = guardianCellPhone;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
   }
 }
