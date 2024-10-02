@@ -1,9 +1,11 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +21,9 @@ public class User {
   private String role;
   private String phone;
   private String address;
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  private Student student;
 
   public User() {
   }
@@ -87,5 +92,13 @@ public class User {
 
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public Student getStudent() {
+    return student;
+  }
+
+  public void setStudent(Student student) {
+    this.student = student;
   }
 }
