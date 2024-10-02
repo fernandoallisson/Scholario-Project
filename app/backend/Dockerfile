@@ -11,6 +11,6 @@ RUN ls -l /app/target
 # 2º Estágio - Running
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-COPY --from=builder /app/target/*.jar /app/app.jar
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-jar", "app.jar"]

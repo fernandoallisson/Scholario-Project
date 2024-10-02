@@ -3,7 +3,7 @@ services:
   application:
     container_name: scholarioapp
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     restart: always
     ports:
@@ -13,9 +13,11 @@ services:
       - DATABASE_PORT=3306
       - DATABASE_USER=root
       - DATABASE_PASSWORD=root
+    depends_on:
+      - mysql
 
   mysql:
-    container_name: scholariodb
+    container_name: mysql
     image: mysql:8.0.32
     restart: always
     ports:
