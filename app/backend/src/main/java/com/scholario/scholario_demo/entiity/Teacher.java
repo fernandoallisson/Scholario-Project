@@ -1,14 +1,20 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
-@Table(name = "teachers")
+@DiscriminatorValue("teacher")
 public class Teacher extends User{
 
   private String department;
   private String hireDate;
+
+ @ManyToOne
+ @JoinColumn(name = "subject_id")
+ private Subject subject;
 
   public Teacher() {
   }
@@ -35,4 +41,12 @@ public class Teacher extends User{
   public void setHireDate(String hireDate) {
     this.hireDate = hireDate;
   }
+
+ public Subject getSubject() {
+   return subject;
+ }
+
+ public void setSubject(Subject subject) {
+   this.subject = subject;
+ }
 }

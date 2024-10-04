@@ -1,15 +1,12 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
 
 @Entity
+@DiscriminatorValue("student")
 public class Student extends User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+
   private Long enrollment;
   private String guardianName;
   private String guardianCellPhone;

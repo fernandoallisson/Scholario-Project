@@ -8,6 +8,7 @@ import com.scholario.scholario_demo.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,38 +31,48 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public UserDto getUserById(@PathVariable Long id) throws RuntimeException {
-    return UserDto.fromEntity(userService.findUserById(id));
+  public ResponseEntity<UserDto> getUserById(@PathVariable Long id) throws RuntimeException {
+    return ResponseEntity.ok(
+        UserDto.fromEntity(userService.findUserById(id))
+    );
   }
 
   @GetMapping
-  public List<UserDto> getAllUsers() {
+  public ResponseEntity<List<UserDto>> getAllUsers() {
     List<User> users = userService.findAllUser();
 
-    return users.stream()
-        .map(UserDto::fromEntity)
-        .toList();
+    return ResponseEntity.ok(
+        users.stream()
+            .map(UserDto::fromEntity)
+            .toList()
+    );
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDto createUser(@RequestBody UserCreationDto userCreationDto) {
-    return UserDto.fromEntity(userService.createUser(userCreationDto.toEntity())
+  public ResponseEntity<UserDto> createUser(@RequestBody UserCreationDto userCreationDto) {
+    return ResponseEntity.ok(
+        UserDto.fromEntity(
+            userService.createUser(userCreationDto.toEntity())
+        )
     );
   }
 
   @PutMapping("/{id}")
-  public UserDto updateUser (
+  public ResponseEntity<UserDto> updateUser (
       @PathVariable Long id,
       @RequestBody UserCreationDto userCreationDto) {
 
-    return UserDto.fromEntity(
-        userService.updateUser(id, userCreationDto.toEntity())
-    );
+    return ResponseEntity.ok(
+        UserDto.fromEntity(
+            userService.updateUser(id, userCreationDto.toEntity())
+        ));
   }
+
   @DeleteMapping("/{id}")
-  public String deleteUserById(@PathVariable Long id) {
+  public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
     userService.deleteUserById(id);
-    return "Usuário de ID: " + id + " foi removido da base de dados";
+   
+    return ResponseEntity.ok("Usuário de ID: " + id + " foi removido da base de dados");
   }
 }

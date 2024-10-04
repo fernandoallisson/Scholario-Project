@@ -1,5 +1,5 @@
 package com.scholario.scholario_demo.service;
 
-public class subjectService {
+public class SubjectService {
 
 }

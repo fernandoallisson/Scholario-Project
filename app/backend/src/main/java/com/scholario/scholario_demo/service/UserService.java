@@ -1,7 +1,7 @@
 package com.scholario.scholario_demo.service;
 
 import com.scholario.scholario_demo.entiity.User;
-import com.scholario.scholario_demo.exception.UserException;
+import com.scholario.scholario_demo.exception.user.UserException;
 import com.scholario.scholario_demo.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,7 @@ public class UserService {
     userFound.setAddress(user.getAddress());
     userFound.setPhone(user.getPhone());
     userFound.setRole(user.getRole());
+
 
     return userRepository.save(userFound);
   }

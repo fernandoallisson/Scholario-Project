@@ -1,18 +1,18 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "admins")
-public class Admin extends User{
+@DiscriminatorValue("admin")
+public class Administrator extends User {
 
   private String department;
   private String hireDate;
 
-  public Admin(){}
+  public Administrator(){}
 
-  public Admin(String name, String email, String password, String role, String phone,
+  public Administrator(String name, String email, String password, String role, String phone,
       String address,
       String birthdate, String department, String hireDate) {
     super(name, email, password, role, phone, address, birthdate);
