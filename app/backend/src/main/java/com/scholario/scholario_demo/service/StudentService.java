@@ -21,7 +21,7 @@ public class StudentService {
   }
 
   public Student getStudentById(Long id) throws StudentNotFoundException {
-    return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Usuário não encontrado"));
+    return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("USer not found."));
   }
 
   public Student createStudent(Student student) {
