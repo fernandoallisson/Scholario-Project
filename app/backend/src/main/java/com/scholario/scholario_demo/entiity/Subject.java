@@ -1,12 +1,13 @@
 package com.scholario.scholario_demo.entiity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,8 +21,8 @@ public class Subject {
   private String name;
   private String description;
 
- @OneToMany(mappedBy = "subject")
- private List<Teacher> teachers;
+ @ManyToMany(mappedBy = "subject")
+ private List<Teacher> teachers = new ArrayList<>();
 
   public Subject() {
   }

@@ -71,4 +71,28 @@ public class TeacherController {
 
     return ResponseEntity.ok("Usuário de ID: " + id + " foi removido da base de dados");
   }
+
+  // Relacionar um professor a uma disciplina específica ------------------------------- (N:N)
+
+  @PutMapping("/{teacherId}/subjects/{subjectId}")
+  public ResponseEntity<TeacherDto> addSubjectToTeacher(
+      @PathVariable Long teacherId,
+      @PathVariable Long subjectId) {
+    return ResponseEntity.ok(
+        TeacherDto.fromEntity(
+            teacherService.addSubjectToTeacher(teacherId, subjectId)
+        )
+    );
+  }
+
+  @DeleteMapping("/{teacherId}/subjects/{subjectId}")
+  public ResponseEntity<TeacherDto> removeSubjectFromTeacher(
+      @PathVariable Long teacherId,
+      @PathVariable Long subjectId) {
+    return ResponseEntity.ok(
+        TeacherDto.fromEntity(
+            teacherService.removeSubjectFromTeacher(teacherId, subjectId)
+        )
+    );
+  }
 }

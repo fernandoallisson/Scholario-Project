@@ -1,5 +1,6 @@
 package com.scholario.scholario_demo.service;
 
+import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.entiity.Teacher;
 import com.scholario.scholario_demo.exception.teacher.TeacherNotFoundException;
 import com.scholario.scholario_demo.repository.TeacherRepository;
@@ -10,10 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeacherService {
   private final TeacherRepository teacherRepository;
+  private final SubjectService subjectService;
 
   @Autowired
-  public TeacherService (TeacherRepository teacherRepository) {
+  public TeacherService (TeacherRepository teacherRepository, SubjectService subjectService) {
     this.teacherRepository = teacherRepository;
+    this.subjectService = subjectService;
   }
 
   public List<Teacher> getAllTeachers() {
@@ -47,5 +50,23 @@ public class TeacherService {
 
   public void deleteTeacher (Long id) {
     teacherRepository.deleteById(id);
+  }
+
+  // Relacionar um professor a uma disciplina específica ------------------------------- (N:N)
+
+  public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) throws TeacherNotFoundException {
+    Teacher teacher = getTeacherById(teacherId);
+    Subject subject = subjectService.getSubjectById(subjectId);
+
+    teacher.getSubject().add(subject);
+    return teacherRepository.save(teacher);
+  }
+
+  public Teacher removeSubjectFromTeacher(Long teacherId, Long subjectId) throws TeacherNotFoundException {
+    Teacher teacher = getTeacherById(teacherId);
+    Subject subject = subjectService.getSubjectById(subjectId);
+
+    teacher.getSubject().remove(subject);
+    return teacherRepository.save(teacher);
   }
 }

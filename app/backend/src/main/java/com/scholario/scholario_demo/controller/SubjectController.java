@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scholario.scholario_demo.dto.subject.subjectDto;
+import com.scholario.scholario_demo.dto.subject.SubjectDto;
 import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.service.SubjectService;
 
@@ -30,38 +30,38 @@ public class SubjectController {
   }
 
   @GetMapping
-  public ResponseEntity<List<subjectDto>> getAllSubjects() {
+  public ResponseEntity<List<SubjectDto>> getAllSubjects() {
     List<Subject> subjects = subjectService.getAllSubjects();
 
     return ResponseEntity.ok(
         subjects.stream()
-            .map(subjectDto::fromEntity)
+            .map(SubjectDto::fromEntity)
             .toList()
     );
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<subjectDto> getSubjectById(Long id) {
+  public ResponseEntity<SubjectDto> getSubjectById(Long id) {
     return ResponseEntity.ok(
-        subjectDto.fromEntity(subjectService.getSubjectById(id))
+        SubjectDto.fromEntity(subjectService.getSubjectById(id))
     );
   }
 
   @PostMapping
-  public ResponseEntity<subjectDto> createSubject(@RequestBody  SubjectCreationDto subjectCreationDto) {
+  public ResponseEntity<SubjectDto> createSubject(@RequestBody  SubjectCreationDto subjectCreationDto) {
     return ResponseEntity.ok(
-        subjectDto.fromEntity(
+        SubjectDto.fromEntity(
             subjectService.createSubject(subjectCreationDto.toEntity())
         )
     );
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<subjectDto> updateSubject(
+  public ResponseEntity<SubjectDto> updateSubject(
       @PathVariable  Long id,
       @RequestBody SubjectCreationDto subjectCreationDto) {
     return ResponseEntity.ok(
-        subjectDto.fromEntity(
+        SubjectDto.fromEntity(
             subjectService.updateSubject(id, subjectCreationDto.toEntity())
         )
     );

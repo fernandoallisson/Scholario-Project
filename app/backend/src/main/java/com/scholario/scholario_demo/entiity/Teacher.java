@@ -1,20 +1,28 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.JoinTable;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 @DiscriminatorValue("teacher")
-public class Teacher extends User{
+public class Teacher extends User {
 
   private String department;
   private String hireDate;
 
- @ManyToOne
- @JoinColumn(name = "subject_id")
- private Subject subject;
+  @ManyToMany
+  @JoinTable(
+      name = "teachers_subjects",
+      joinColumns = @JoinColumn(name = "teacher_id"),
+      inverseJoinColumns = @JoinColumn(name = "subject_id")
+  )
+ private List<Subject> subject = new ArrayList<>();
 
   public Teacher() {
   }
@@ -42,11 +50,11 @@ public class Teacher extends User{
     this.hireDate = hireDate;
   }
 
- public Subject getSubject() {
-   return subject;
- }
+  public List<Subject> getSubject() {
+    return subject;
+  }
 
- public void setSubject(Subject subject) {
-   this.subject = subject;
- }
+  public void setSubject(List<Subject> subject) {
+    this.subject = subject;
+  }
 }
