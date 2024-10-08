@@ -12,10 +12,10 @@ public class Administrator extends User {
 
   public Administrator(){}
 
-  public Administrator(String name, String email, String password, String role, String phone,
+  public Administrator(String name, String email, String password, String phone,
       String address,
       String birthdate, String department, String hireDate) {
-    super(name, email, password, role, phone, address, birthdate);
+    super(name, email, password, phone, address, birthdate);
     this.department = department;
     this.hireDate = hireDate;
   }

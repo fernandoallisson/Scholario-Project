@@ -3,7 +3,7 @@ package com.scholario.scholario_demo.dto.student;
 import com.scholario.scholario_demo.entiity.Student;
 
 public record StudentDto(Long id, String name, String email,
-String password, String role, String phone, String address,
+String password, String phone, String address,
 String birthdate, Long enrollment, String guardianName,
 String guardianCellPhone) {
 
@@ -13,7 +13,6 @@ String guardianCellPhone) {
         student.getName(),
         student.getEmail(),
         student.getPassword(),
-        student.getRole(),
         student.getPhone(),
         student.getAddress(),
         student.getBirthdate(),

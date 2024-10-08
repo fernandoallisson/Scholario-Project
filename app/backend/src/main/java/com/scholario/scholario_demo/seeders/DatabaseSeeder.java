@@ -1,8 +1,10 @@
 package com.scholario.scholario_demo.seeders;
 
+import com.scholario.scholario_demo.entiity.Administrator;
 import com.scholario.scholario_demo.entiity.Student;
 import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.entiity.Teacher;
+import com.scholario.scholario_demo.repository.AdministratorRepository;
 import com.scholario.scholario_demo.repository.StudentRepository;
 import com.scholario.scholario_demo.repository.SubjectRepository;
 import com.scholario.scholario_demo.repository.TeacherRepository;
@@ -17,13 +19,15 @@ public class DatabaseSeeder implements CommandLineRunner {
   private final TeacherRepository teacherRepository;
   private final StudentRepository studentRepository;
   private final SubjectRepository subjectRepository;
+  protected final AdministratorRepository administratorRepository;
 
 
   public DatabaseSeeder(TeacherRepository teacherRepository, StudentRepository studentRepository,
-      SubjectRepository subjectRepository) {
+      SubjectRepository subjectRepository, AdministratorRepository administratorRepository) {
     this.teacherRepository = teacherRepository;
     this.studentRepository = studentRepository;
     this.subjectRepository = subjectRepository;
+    this.administratorRepository = administratorRepository;
   }
 
   @Override
@@ -31,6 +35,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     seedTeachers();
     seedStudents();
     seedSubjects();
+    seedAdministrators();
   }
 
   private void seedTeachers() {
@@ -48,7 +53,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         "Fernando Álisson",
         "@fernando.alisson@email.com",
         "fernaninho123",
-        "Teacher",
         "81998979999",
         "Camocim de São Félix",
         "23/10/1999",
@@ -66,7 +70,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         "Luiz Gustavo",
         "luizgustavo@email.com",
         "gustavo123",
-        "Student",
         "81999896532",
         "Camocim de São Félix",
         "28/09/2006",
@@ -88,10 +91,25 @@ public class DatabaseSeeder implements CommandLineRunner {
     subjects.add(new Subject("Ciência", "Ciências da natureza"));
   }
 
+  private void seedAdministrators() {
+    List<Administrator> administratorList = new ArrayList<>();
+
+    administratorList.add( new Administrator(
+          "Álisson dos Santos",
+        "alisson@email.com",
+        "alissinho123",
+        "81998979931",
+        "Camocim de São Félix",
+        "23/10/1999",
+        "Direção",
+        "01/01/2020"
+        )
+    );
+  }
+
   private TeacherRepository getTeacherRepository() {
     return teacherRepository;
   }
-
 
   private StudentRepository getStudentRepository() {
     return studentRepository;
@@ -100,4 +118,9 @@ public class DatabaseSeeder implements CommandLineRunner {
   private SubjectRepository getSubjectRepository() {
     return subjectRepository;
   }
+
+  private AdministratorRepository getAdministratorRepository() {
+    return administratorRepository;
+  }
+
 }

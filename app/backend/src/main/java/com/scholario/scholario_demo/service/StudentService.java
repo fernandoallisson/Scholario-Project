@@ -41,7 +41,6 @@ public class StudentService {
     studentFound.setName(student.getName());
     studentFound.setEmail(student.getEmail());
     studentFound.setPassword(student.getPassword());
-    studentFound.setRole(student.getRole());
     studentFound.setPhone(student.getPhone());
     studentFound.setAddress(student.getAddress());
     studentFound.setBirthdate(student.getBirthdate());

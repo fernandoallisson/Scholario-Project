@@ -13,10 +13,10 @@ public class Student extends User {
 
   public Student(){}
 
-  public Student(String name, String email, String password, String role, String phone,
+  public Student(String name, String email, String password, String phone,
       String address, String birthdate, Long enrollment, String guardianName,
       String guardianCellPhone) {
-    super(name, email, password, role, phone, address, birthdate);
+    super(name, email, password, phone, address, birthdate);
     this.enrollment = enrollment;
     this.guardianName = guardianName;
     this.guardianCellPhone = guardianCellPhone;

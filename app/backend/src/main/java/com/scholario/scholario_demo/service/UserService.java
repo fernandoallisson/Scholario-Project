@@ -43,7 +43,6 @@ public class UserService {
     userFound.setPassword(user.getPassword());
     userFound.setAddress(user.getAddress());
     userFound.setPhone(user.getPhone());
-    userFound.setRole(user.getRole());
 
 
     return userRepository.save(userFound);

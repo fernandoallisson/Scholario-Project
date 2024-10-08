@@ -48,7 +48,6 @@ public class TeacherService {
     teacherFound.setBirthdate(teacher.getBirthdate());
     teacherFound.setPassword(teacher.getPassword());
     teacherFound.setPhone(teacher.getPhone());
-    teacherFound.setRole(teacher.getRole());
     teacherFound.setSubject(teacher.getSubject());
     teacherFound.setHireDate(teacher.getHireDate());
 
