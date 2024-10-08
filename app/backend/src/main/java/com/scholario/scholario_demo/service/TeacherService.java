@@ -6,6 +6,9 @@ import com.scholario.scholario_demo.exception.teacher.TeacherNotFoundException;
 import com.scholario.scholario_demo.repository.TeacherRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +22,12 @@ public class TeacherService {
     this.subjectService = subjectService;
   }
 
-  public List<Teacher> getAllTeachers() {
-    return teacherRepository.findAll();
+  public List<Teacher> getAllTeachers(int pageNumber, int pageSize) {
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+    Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
+
+    return teacherPage.toList();
   }
 
   public Teacher getTeacherById(Long id) throws TeacherNotFoundException {

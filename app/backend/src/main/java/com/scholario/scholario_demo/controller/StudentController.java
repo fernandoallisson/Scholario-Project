@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scholario.scholario_demo.service.StudentService;
@@ -31,8 +32,11 @@ public class StudentController {
   }
 
   @GetMapping
-  public ResponseEntity<List<StudentDto>> getAllStudents() {
-    List<Student> students = studentService.getAllStudents();
+  public ResponseEntity<List<StudentDto>> getAllStudents(
+      @RequestParam(required = false, defaultValue = "0") int pageNumber,
+      @RequestParam(required = false, defaultValue = "20") int pageSize
+  ) {
+    List<Student> students = studentService.getAllStudents(pageNumber, pageSize);
 
     return ResponseEntity.ok(
         students.stream()

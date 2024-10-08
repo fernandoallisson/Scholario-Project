@@ -6,6 +6,9 @@ import com.scholario.scholario_demo.exception.subject.SubjectNotFoundException;
 import com.scholario.scholario_demo.repository.SubjectRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +20,13 @@ public class SubjectService {
     this.subjectRepository = subjectRepository;
   }
 
-  public List<Subject> getAllSubjects() {
-    return subjectRepository.findAll();
+  public List<Subject> getAllSubjects(int pageNumber, int pageSize) {
+
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+    Page<Subject> subjectPage = subjectRepository.findAll(pageable);
+
+    return subjectPage.toList();
   }
 
   public Subject getSubjectById(Long id) throws SubjectNotFoundException {

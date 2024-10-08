@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,8 +28,12 @@ public class TeacherController {
   }
 
   @GetMapping
-  public ResponseEntity<List<TeacherDto>> getAllTeachers() {
-    List<Teacher> teachers = teacherService.getAllTeachers();
+  public ResponseEntity<List<TeacherDto>> getAllTeachers(
+      @RequestParam(required = false, defaultValue = "0") int pageNumber,
+      @RequestParam(required = false, defaultValue = "20") int pageSize
+  ) {
+
+    List<Teacher> teachers = teacherService.getAllTeachers(pageNumber, pageSize);
 
     return ResponseEntity.ok(
         teachers.stream()

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,14 +39,17 @@ public class UserController {
   }
 
   @GetMapping
-  public ResponseEntity<List<UserDto>> getAllUsers() {
-    List<User> users = userService.findAllUser();
-
-    return ResponseEntity.ok(
-        users.stream()
-            .map(UserDto::fromEntity)
-            .toList()
-    );
+  public ResponseEntity<List<UserDto>> getAllUsers(
+        @RequestParam(required = false, defaultValue = "0") int pageNumber,
+        @RequestParam(required = false, defaultValue = "20") int pageSize
+    ) {
+      List<User> paginatedUsers = userService.findAllUser(pageNumber, pageSize);
+      
+      return ResponseEntity.ok(
+          paginatedUsers.stream()
+              .map(UserDto::fromEntity)
+              .toList()
+      );
   }
 
   @PostMapping
