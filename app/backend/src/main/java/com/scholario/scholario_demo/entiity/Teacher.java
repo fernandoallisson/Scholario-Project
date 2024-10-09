@@ -24,6 +24,14 @@ public class Teacher extends User {
   )
  private List<Subject> subject = new ArrayList<>();
 
+  @ManyToMany
+  @JoinTable(
+      name = "teachers_classes",
+      joinColumns = @JoinColumn(name = "teacher_id"),
+      inverseJoinColumns = @JoinColumn(name = "class_id")
+  )
+  private List<Classe> classesTeachers = new ArrayList<>();
+
   public Teacher() {
   }
 
@@ -56,5 +64,13 @@ public class Teacher extends User {
 
   public void setSubject(List<Subject> subject) {
     this.subject = subject;
+  }
+
+  public List<Classe> getClassesTeachers() {
+    return classesTeachers;
+  }
+
+  public void setClassesTeachers(List<Classe> classes) {
+    this.classesTeachers = classes;
   }
 }

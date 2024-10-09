@@ -1,9 +1,11 @@
 package com.scholario.scholario_demo.controller;
 
 import com.scholario.scholario_demo.dto.subject.SubjectCreationDto;
+import com.scholario.scholario_demo.exception.subject.SubjectNotFoundException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +47,13 @@ public class SubjectController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<SubjectDto> getSubjectById(Long id) {
-    return ResponseEntity.ok(
-        SubjectDto.fromEntity(subjectService.getSubjectById(id))
-    );
+  public ResponseEntity<?> getSubjectById(@PathVariable  Long id) {
+    try {
+      SubjectDto subject = SubjectDto.fromEntity(subjectService.getSubjectById(id));
+      return ResponseEntity.ok(subject);
+    } catch (SubjectNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subject with id " +  id + " not found");
+    }
   }
 
   @PostMapping
@@ -61,14 +66,16 @@ public class SubjectController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<SubjectDto> updateSubject(
+  public ResponseEntity<?> updateSubject(
       @PathVariable  Long id,
       @RequestBody SubjectCreationDto subjectCreationDto) {
-    return ResponseEntity.ok(
-        SubjectDto.fromEntity(
-            subjectService.updateSubject(id, subjectCreationDto.toEntity())
-        )
-    );
+
+    try {
+      SubjectDto subject = SubjectDto.fromEntity(subjectService.updateSubject(id, subjectCreationDto.toEntity()));
+      return ResponseEntity.ok(subject);
+    } catch (SubjectNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subject with id " +  id + " not found");
+    }
   }
 
   @DeleteMapping("/{id}")

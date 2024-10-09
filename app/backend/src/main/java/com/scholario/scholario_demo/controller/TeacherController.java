@@ -3,8 +3,12 @@ package com.scholario.scholario_demo.controller;
 import com.scholario.scholario_demo.dto.teacher.TeacherCreationDto;
 import com.scholario.scholario_demo.dto.teacher.TeacherDto;
 import com.scholario.scholario_demo.entiity.Teacher;
+import com.scholario.scholario_demo.exception.classes.ClassNotFoundException;
+import com.scholario.scholario_demo.exception.teacher.TeacherNotFoundException;
 import com.scholario.scholario_demo.service.TeacherService;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +26,7 @@ public class TeacherController {
 
   private final TeacherService teacherService;
 
-
+  @Autowired
   public TeacherController(TeacherService teacherService) {
     this.teacherService = teacherService;
   }
@@ -43,10 +47,13 @@ public class TeacherController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<TeacherDto> getTeacherById(@PathVariable Long id) {
-    return ResponseEntity.ok(
-        TeacherDto.fromEntity(teacherService.getTeacherById(id))
-    );
+  public ResponseEntity<?> getTeacherById(@PathVariable Long id) throws TeacherNotFoundException{
+    try {
+      TeacherDto teacher = TeacherDto.fromEntity(teacherService.getTeacherById(id));
+      return ResponseEntity.ok(teacher);
+    } catch (TeacherNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " + id + " not found.");
+    }
   }
 
   @PostMapping
@@ -60,18 +67,20 @@ public class TeacherController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TeacherDto> updateTeacher(
+  public ResponseEntity<?> updateTeacher(
       @PathVariable  Long id,
       @RequestBody TeacherCreationDto teacherCreationDto) {
 
-    return ResponseEntity.ok(
-        TeacherDto.fromEntity(
-            teacherService.updateTeacher(id, teacherCreationDto.toEntity())
-        ));
+    try {
+      TeacherDto teacherDto = TeacherDto.fromEntity(teacherService.updateTeacher(id, teacherCreationDto.toEntity()));
+      return ResponseEntity.ok(teacherDto);
+    } catch (TeacherNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " +  id + " not found");
+    }
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteTeacher(Long id) {
+  public ResponseEntity<String> deleteTeacher(@PathVariable Long id) {
     teacherService.deleteTeacher(id);
 
     return ResponseEntity.ok("Usuário de ID: " + id + " foi removido da base de dados");
@@ -100,4 +109,61 @@ public class TeacherController {
         )
     );
   }
+
+
+  // Relacionar um professor a uma turma específica ------------------------------- (N:N)
+
+  @PutMapping("/{teacherId}/classes/{classId}")
+  public ResponseEntity<TeacherDto> addClassToTeacher(
+      @PathVariable Long teacherId,
+      @PathVariable Long classId) throws ClassNotFoundException, TeacherNotFoundException {
+    return ResponseEntity.ok(
+        TeacherDto.fromEntity(
+            teacherService.addClassToTeacher(teacherId, classId)
+        )
+    );
+  }
+
+  @DeleteMapping("/{teacherId}/classes/{classId}")
+  public ResponseEntity<TeacherDto> removeClassFromTeacher(
+      @PathVariable Long teacherId,
+      @PathVariable Long classId) throws ClassNotFoundException, TeacherNotFoundException {
+    return ResponseEntity.ok(
+        TeacherDto.fromEntity(
+            teacherService.removeClassFromTeacher(teacherId, classId)
+        )
+    );
+  }
+  
+  // @PutMapping("/{teacherId}/classes/{classId}")
+  // public ResponseEntity<?> addClassToTeacher(
+  //     @PathVariable Long teacherId,
+  //     @PathVariable Long classId) throws TeacherNotFoundException, ClassNotFoundException {
+  //   try {
+  //     TeacherDto updatedTeacher = TeacherDto.fromEntity(
+  //         teacherService.addClassToTeacher(teacherId, classId));
+  //     return ResponseEntity.ok(updatedTeacher);
+  //   } catch (TeacherNotFoundException e) {
+  //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " + teacherId + " not found.");
+  //   } catch (ClassNotFoundException e) {
+  //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class with id " + classId + " not found.");
+  //   }
+  // }
+
+  // @DeleteMapping("/{teacherId}/classes/{classId}")
+  // public ResponseEntity<?> removeClassFromTeacher(
+  //     @PathVariable Long teacherId,
+  //     @PathVariable Long classId) {
+  //   try {
+  //     TeacherDto updatedTeacher = TeacherDto.fromEntity(
+  //         teacherService.removeClassFromTeacher(teacherId, classId));
+  //     return ResponseEntity.ok(updatedTeacher);
+  //   } catch (TeacherNotFoundException e) {
+  //     return ResponseEntity.status(HttpStatus.NOT_FOUND)
+  //         .body("Teacher with id " + teacherId + " not found.");
+  //   } catch (ClassNotFoundException e) {
+  //     return ResponseEntity.status(HttpStatus.NOT_FOUND)
+  //         .body("Class with id " + classId + " not found.");
+  //   }
+  // }
 }

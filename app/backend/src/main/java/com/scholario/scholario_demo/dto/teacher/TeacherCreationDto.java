@@ -10,5 +10,5 @@ public record TeacherCreationDto(
       return new Teacher(
           name, email, password, phone, address, birthdate, department, hireDate
       );
-    };
+    }
 }

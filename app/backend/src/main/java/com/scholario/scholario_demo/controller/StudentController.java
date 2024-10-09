@@ -4,9 +4,12 @@ import com.scholario.scholario_demo.dto.student.StudentCreationDto;
 import com.scholario.scholario_demo.dto.student.StudentDto;
 import com.scholario.scholario_demo.entiity.Student;
 
+import com.scholario.scholario_demo.exception.classes.ClassNotFoundException;
+import com.scholario.scholario_demo.exception.student.StudentNotFoundException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,10 +49,13 @@ public class StudentController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) {
-    return ResponseEntity.ok(
-        StudentDto.fromEntity(studentService.getStudentById(id))
-    );
+  public ResponseEntity<?> getStudentById(@PathVariable Long id) {
+    try {
+      StudentDto studentDto = StudentDto.fromEntity(studentService.getStudentById(id));
+      return ResponseEntity.ok(studentDto);
+    } catch (StudentNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + id + " not found.");
+    }
   } 
 
   @PostMapping
@@ -62,20 +68,51 @@ public class StudentController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<StudentDto> updateStudent(
+  public ResponseEntity<?> updateStudent(
       @PathVariable  Long id,
       @RequestBody StudentCreationDto studentCreationDto) {
 
-    return ResponseEntity.ok(
-        StudentDto.fromEntity(
-            studentService.updateStudent(id, studentCreationDto.toEntity())
-        ));
+    try {
+      StudentDto studentDto = StudentDto.fromEntity(studentService.updateStudent(id, studentCreationDto.toEntity()));
+      return ResponseEntity.ok(studentDto);
+    } catch (StudentNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " +  id + " not found");
+    }
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteStudent(Long id) {
+  public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
     studentService.deleteStudent(id);
 
     return ResponseEntity.ok("Usuário de ID: " + id + " foi removido da base de dados");
   }
+
+  // Relacionar um estudante a uma classe -------------- N:N
+  @PutMapping("/{studentId}/classes/{classId}")
+  public ResponseEntity<?> addClassToStudent(
+      @PathVariable Long studentId,
+      @PathVariable Long classId) {
+    try {
+      StudentDto updatedStudent = StudentDto.fromEntity(studentService.addClassToStudent(studentId, classId));
+      return ResponseEntity.ok(updatedStudent);
+    } catch (StudentNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + studentId + " not found.");
+    } catch (ClassNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class with id " + classId + " not found.");
+    }
+  }
+
+@DeleteMapping("/{studentId}/classes/{classId}")
+public ResponseEntity<?> removeClassFromStudent(
+    @PathVariable Long studentId,
+    @PathVariable Long classId) {
+  try {
+    StudentDto updatedStudent = StudentDto.fromEntity(studentService.removeClassFromStudent(studentId, classId));
+    return ResponseEntity.ok(updatedStudent);
+  } catch (StudentNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + studentId + " not found.");
+  } catch (ClassNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class with id " + classId + " not found.");
+  }
+}
 }

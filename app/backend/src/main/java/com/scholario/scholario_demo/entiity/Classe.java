@@ -1,14 +1,18 @@
 package com.scholario.scholario_demo.entiity;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "classes")
-public class Class {
+public class Classe {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -16,10 +20,16 @@ public class Class {
   private String name;
   private int year;
 
-  public Class() {
+  @ManyToMany(mappedBy = "classesTeachers")
+  List<Teacher> teachers = new ArrayList<>();
+
+  @ManyToMany(mappedBy = "classesStudents")
+  List<Student> students = new ArrayList<>();
+
+  public Classe() {
   }
 
-  public Class(String name, int year) {
+  public Classe(String name, int year) {
     this.name = name;
     this.year = year;
   }
@@ -46,5 +56,21 @@ public class Class {
 
   public void setYear(int year) {
     this.year = year;
+  }
+
+  public List<Teacher> getTeachers() {
+    return teachers;
+  }
+
+  public void setTeachers(List<Teacher> teachers) {
+    this.teachers = teachers;
+  }
+
+  public List<Student> getStudents() {
+    return students;
+  }
+
+  public void setStudents(List<Student> students) {
+    this.students = students;
   }
 }

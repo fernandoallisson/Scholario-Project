@@ -6,6 +6,8 @@ import com.scholario.scholario_demo.entiity.Administrator;
 import com.scholario.scholario_demo.exception.administrator.AdministratorNotfoundException;
 import com.scholario.scholario_demo.service.AdministratorService;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ public class AdministratorController {
 
   private final AdministratorService administratorService;
 
+  @Autowired
   public AdministratorController(AdministratorService administratorService) {
     this.administratorService = administratorService;
   }
@@ -42,12 +45,15 @@ public class AdministratorController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<AdministratorDto> getAdministratorById(@PathVariable Long id)
+  public ResponseEntity<?> getAdministratorById(@PathVariable Long id)
   throws AdministratorNotfoundException
   {
-    return ResponseEntity.ok(
-        AdministratorDto.fromEntity(administratorService.getAdministratorById(id))
-    );
+    try {
+      AdministratorDto administratorDto = AdministratorDto.fromEntity(administratorService.getAdministratorById(id));
+      return ResponseEntity.ok(administratorDto);
+    } catch (AdministratorNotfoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrator with id " +  id + " not found");
+    }
   }
 
   @PostMapping
@@ -61,14 +67,17 @@ public class AdministratorController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<AdministratorDto> updateAdministrator(
-      @PathVariable Long id, @RequestBody AdministratorCreationDto administratorCreationDto
+  public ResponseEntity<?> updateAdministrator(
+      @PathVariable Long id,
+      @RequestBody AdministratorCreationDto administratorCreationDto
   ) throws AdministratorNotfoundException {
-    return ResponseEntity.ok(
-        AdministratorDto.fromEntity(
-            administratorService.updateAdministrator(id, administratorCreationDto.toEntity())
-        )
-    );
+    try {
+      AdministratorDto administratorDto = AdministratorDto.fromEntity(
+          administratorService.updateAdministrator(id, administratorCreationDto.toEntity()));
+      return ResponseEntity.ok(administratorDto);
+    } catch (AdministratorNotfoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrator with id " +  id + " not found");
+    }
   }
 
   @DeleteMapping("/{id}")

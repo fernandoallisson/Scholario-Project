@@ -1,5 +1,6 @@
 package com.scholario.scholario_demo.service;
 
+import com.scholario.scholario_demo.entiity.Classe;
 import com.scholario.scholario_demo.entiity.Student;
 import com.scholario.scholario_demo.exception.student.StudentNotFoundException;
 import com.scholario.scholario_demo.repository.StudentRepository;
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentService {
   private final StudentRepository studentRepository;
+  private final ClassService classService;
 
   @Autowired
-  public StudentService(StudentRepository studentRepository) {
+  public StudentService(StudentRepository studentRepository, ClassService classService) {
     this.studentRepository = studentRepository;
+    this.classService = classService;
   }
 
   public List<Student> getAllStudents(int pageNumber, int pageSize) {
@@ -55,5 +58,29 @@ public class StudentService {
     Student student = getStudentById(id);
 
     studentRepository.delete(student);
+  }
+
+
+  // Relacionar um estudante a uma classe -------------- N:N
+  public Student addClassToStudent(Long studentId, Long classId) {
+    Student student = getStudentById(studentId);
+    Classe classe = classService.getClassById(classId);
+
+    if (student.getClasses().contains(classe)) {
+      return student;
+    }
+
+    student.getClasses().add(classe);
+
+    return studentRepository.save(student);
+    
+  }
+
+  public Student removeClassFromStudent(Long studentId, Long classId) {
+    Student student = getStudentById(studentId);
+    Classe classe = classService.getClassById(classId);
+
+   student.getClasses().remove(classe);
+   return studentRepository.save(student);
   }
 }

@@ -1,7 +1,10 @@
 package com.scholario.scholario_demo.service;
 
+import com.scholario.scholario_demo.entiity.Classe;
 import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.entiity.Teacher;
+import com.scholario.scholario_demo.exception.classes.ClassNotFoundException;
+import com.scholario.scholario_demo.exception.subject.SubjectNotFoundException;
 import com.scholario.scholario_demo.exception.teacher.TeacherNotFoundException;
 import com.scholario.scholario_demo.repository.TeacherRepository;
 import java.util.List;
@@ -15,11 +18,14 @@ import org.springframework.stereotype.Service;
 public class TeacherService {
   private final TeacherRepository teacherRepository;
   private final SubjectService subjectService;
+  private final ClassService classService;
 
   @Autowired
-  public TeacherService (TeacherRepository teacherRepository, SubjectService subjectService) {
+  public TeacherService (TeacherRepository teacherRepository, SubjectService subjectService,
+      ClassService classService) {
     this.teacherRepository = teacherRepository;
     this.subjectService = subjectService;
+    this.classService = classService;
   }
 
   public List<Teacher> getAllTeachers(int pageNumber, int pageSize) {
@@ -60,19 +66,47 @@ public class TeacherService {
 
   // Relacionar um professor a uma disciplina específica ------------------------------- (N:N)
 
-  public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) throws TeacherNotFoundException {
+  public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) throws TeacherNotFoundException, SubjectNotFoundException {
     Teacher teacher = getTeacherById(teacherId);
     Subject subject = subjectService.getSubjectById(subjectId);
+
+    if (teacher.getSubject().contains(subject)) {
+      return teacher;
+    }
 
     teacher.getSubject().add(subject);
     return teacherRepository.save(teacher);
   }
 
-  public Teacher removeSubjectFromTeacher(Long teacherId, Long subjectId) throws TeacherNotFoundException {
+  public Teacher removeSubjectFromTeacher(Long teacherId, Long subjectId) throws TeacherNotFoundException, SubjectNotFoundException {
     Teacher teacher = getTeacherById(teacherId);
     Subject subject = subjectService.getSubjectById(subjectId);
 
     teacher.getSubject().remove(subject);
+    return teacherRepository.save(teacher);
+  }
+
+
+  // Relacionar um professor a uma turma específica ------------------------------- (N:N)
+
+  public Teacher addClassToTeacher(Long teacherId, Long classId) throws TeacherNotFoundException, ClassNotFoundException {
+    Teacher teacher = getTeacherById(teacherId);
+    Classe classe = classService.getClassById(classId);
+
+    if (teacher.getClassesTeachers().contains(classe)) {
+      return teacher;
+    }
+
+    teacher.getClassesTeachers().add(classe);
+    return teacherRepository.save(teacher);
+  }
+
+  public Teacher removeClassFromTeacher(Long teacherId, Long classId) throws TeacherNotFoundException, ClassNotFoundException {
+    Teacher teacher = getTeacherById(teacherId);
+    Classe classe = classService.getClassById(classId);
+
+    teacher.getClassesTeachers().remove(classe);
+    classe.getTeachers().remove(teacher);
     return teacherRepository.save(teacher);
   }
 }
