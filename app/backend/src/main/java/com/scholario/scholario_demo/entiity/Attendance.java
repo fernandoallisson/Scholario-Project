@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +18,14 @@ public class Attendance {
 
   private String date;
   private String status;
+
+  @ManyToOne
+  @JoinColumn(name = "student_id")
+  private Student studentAttendances;
+
+  @ManyToOne
+  @JoinColumn(name = "class_id")
+  private Classe classeAttendances;
 
   public Attendance() {
   }
@@ -47,5 +57,21 @@ public class Attendance {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public Student getStudentAttendances() {
+    return studentAttendances;
+  }
+
+  public void setStudentAttendances(Student studentAttendances) {
+    this.studentAttendances = studentAttendances;
+  }
+
+  public Classe getClasseAttendances() {
+    return classeAttendances;
+  }
+
+  public void setClasseAttendances(Classe classeAttendances) {
+    this.classeAttendances = classeAttendances;
   }
 }

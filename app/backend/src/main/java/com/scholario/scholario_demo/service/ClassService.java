@@ -5,6 +5,8 @@ import com.scholario.scholario_demo.exception.classes.ClassNotFoundException;
 import com.scholario.scholario_demo.repository.ClassRepository;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,10 @@ public class ClassService {
 
   public List<Classe> getAllClasses(int pageNumber, int pageSize) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
-    return classRepository.findAll(pageable).toList();
+
+    Page<Classe> page = classRepository.findAll(pageable);
+
+    return page.toList();
   }
 
   public com.scholario.scholario_demo.entiity.Classe getClassById(Long id) throws ClassNotFoundException{

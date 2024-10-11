@@ -1,7 +1,6 @@
 package com.scholario.scholario_demo.dto.student;
 
 import com.scholario.scholario_demo.dto.classes.ClassDto;
-import com.scholario.scholario_demo.entiity.Classe;
 import com.scholario.scholario_demo.entiity.Student;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public record StudentDto(Long id, String name, String email,
         student.getEnrollment(),
         student.getGuardianName(),
         student.getGuardianCellPhone(),
-        student.getClasses().stream()
+        student.getClassesStudents().stream()
             .map(ClassDto::fromEntity)
             .toList()
     );

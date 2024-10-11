@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class Student extends User {
       inverseJoinColumns = @JoinColumn(name = "class_id")
   )
   private List<Classe> classesStudents = new ArrayList<>();
+
+  @OneToMany(mappedBy = "studentAttendances")
+  private List<Attendance> attendances = new ArrayList<>();
 
   public Student(){}
 
@@ -59,11 +64,19 @@ public class Student extends User {
     this.guardianCellPhone = guardianCellPhone;
   }
 
-  public List<Classe> getClasses() {
+  public List<Attendance> getAttendances() {
+    return attendances;
+  }
+
+  public void setAttendances(List<Attendance> attendances) {
+    this.attendances = attendances;
+  }
+
+  public List<Classe> getClassesStudents() {
     return classesStudents;
   }
 
-  public void setClasses(List<Classe> classes) {
-    this.classesStudents = classes;
+  public void setClassesStudents(List<Classe> classesStudents) {
+    this.classesStudents = classesStudents;
   }
 }

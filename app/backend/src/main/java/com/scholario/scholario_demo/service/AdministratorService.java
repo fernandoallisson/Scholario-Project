@@ -4,7 +4,6 @@ import com.scholario.scholario_demo.entiity.Administrator;
 import com.scholario.scholario_demo.exception.administrator.AdministratorNotfoundException;
 import com.scholario.scholario_demo.repository.AdministratorRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

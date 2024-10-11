@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class Classe {
 
   @ManyToMany(mappedBy = "classesStudents")
   List<Student> students = new ArrayList<>();
+
+  @OneToMany(mappedBy = "classeAttendances")
+  private List<Attendance> attendances = new ArrayList<>();
 
   public Classe() {
   }
@@ -72,5 +76,13 @@ public class Classe {
 
   public void setStudents(List<Student> students) {
     this.students = students;
+  }
+
+  public List<Attendance> getAttendances() {
+    return attendances;
+  }
+
+  public void setAttendances(List<Attendance> attendances) {
+    this.attendances = attendances;
   }
 }

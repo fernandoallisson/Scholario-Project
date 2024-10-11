@@ -66,11 +66,11 @@ public class StudentService {
     Student student = getStudentById(studentId);
     Classe classe = classService.getClassById(classId);
 
-    if (student.getClasses().contains(classe)) {
+    if (student.getClassesStudents().contains(classe)) {
       return student;
     }
 
-    student.getClasses().add(classe);
+    student.getClassesStudents().add(classe);
 
     return studentRepository.save(student);
     
@@ -80,7 +80,7 @@ public class StudentService {
     Student student = getStudentById(studentId);
     Classe classe = classService.getClassById(classId);
 
-   student.getClasses().remove(classe);
+   student.getClassesStudents().remove(classe);
    return studentRepository.save(student);
   }
 }
