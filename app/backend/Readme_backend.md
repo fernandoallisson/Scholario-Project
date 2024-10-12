@@ -1,5 +1,3 @@
-<!-- Crie um readme para essa parte de backend -->
-
 # Backend do Scholario Project
 
 ## Visão Geral
