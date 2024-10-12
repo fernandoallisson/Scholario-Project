@@ -1,61 +1,56 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
-public class Student {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@DiscriminatorValue("student")
+public class Student extends User {
 
-  private Long enrollmentNumber;
-  private String birthdate;
+  private Long enrollment;
   private String guardianName;
   private String guardianCellPhone;
 
-  @OneToOne(optional = false)
-  @JoinColumn(name = "user_id")
-  private User user;
+  @ManyToMany
+  @JoinTable(
+      name = "students_classes",
+      joinColumns = @JoinColumn(name = "student_id"),
+      inverseJoinColumns = @JoinColumn(name = "class_id")
+  )
+  private List<Classe> classesStudents = new ArrayList<>();
 
-  public Student() {
-  }
+  @OneToMany(mappedBy = "studentAttendances", cascade = CascadeType.ALL)
+  private List<Attendance> attendances = new ArrayList<>();
 
-  public Student(Long enrollment_number, String birthdate, String guardianName,
+  @OneToMany(mappedBy = "studentGrades", cascade = CascadeType.ALL)
+  private List<Grade> grades = new ArrayList<>();
+
+  public Student(){}
+
+  public Student(String name, String email, String password, String phone,
+      String address, String birthdate, Long enrollment, String guardianName,
       String guardianCellPhone) {
-    this.enrollmentNumber = enrollment_number;
-    this.birthdate = birthdate;
+    super(name, email, password, phone, address, birthdate);
+    this.enrollment = enrollment;
     this.guardianName = guardianName;
     this.guardianCellPhone = guardianCellPhone;
   }
 
-  public Long getId() {
-    return id;
+   public Long getEnrollment() {
+    return enrollment;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Long getEnrollment_number() {
-    return enrollmentNumber;
-  }
-
-  public void setEnrollment_number(Long enrollment_number) {
-    this.enrollmentNumber = enrollment_number;
-  }
-
-  public String getBirthdate() {
-    return birthdate;
-  }
-
-  public void setBirthdate(String birthdate) {
-    this.birthdate = birthdate;
+  public void setEnrollment(Long enrollment) {
+    this.enrollment = enrollment;
   }
 
   public String getGuardianName() {
@@ -74,11 +69,27 @@ public class Student {
     this.guardianCellPhone = guardianCellPhone;
   }
 
-  public User getUser() {
-    return user;
+  public List<Attendance> getAttendances() {
+    return attendances;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setAttendances(List<Attendance> attendances) {
+    this.attendances = attendances;
+  }
+
+  public List<Classe> getClassesStudents() {
+    return classesStudents;
+  }
+
+  public void setClassesStudents(List<Classe> classesStudents) {
+    this.classesStudents = classesStudents;
+  }
+
+  public List<Grade> getGrades() {
+    return grades;
+  }
+
+  public void setGrades(List<Grade> grades) {
+    this.grades = grades;
   }
 }

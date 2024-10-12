@@ -1,16 +1,29 @@
 package com.scholario.scholario_demo.dto.student;
 
+import com.scholario.scholario_demo.dto.classes.ClassDto;
 import com.scholario.scholario_demo.entiity.Student;
+import java.util.List;
 
-public record StudentDto(Long id, Long enrollmentNumber, String birthdate, String guardianName, String guardianCellPhone) {
+public record StudentDto(Long id, String name, String email,
+   String password, String phone, String address,
+   String birthdate, Long enrollment, String guardianName,
+   String guardianCellPhone, List<ClassDto> classes) {
 
   public static StudentDto fromEntity(Student student) {
     return new StudentDto(
         student.getId(),
-        student.getEnrollment_number(),
+        student.getName(),
+        student.getEmail(),
+        student.getPassword(),
+        student.getPhone(),
+        student.getAddress(),
         student.getBirthdate(),
+        student.getEnrollment(),
         student.getGuardianName(),
-        student.getGuardianCellPhone()
+        student.getGuardianCellPhone(),
+        student.getClassesStudents().stream()
+            .map(ClassDto::fromEntity)
+            .toList()
     );
   }
 }
