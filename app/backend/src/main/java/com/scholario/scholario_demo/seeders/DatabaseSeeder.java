@@ -97,9 +97,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     administratorList.add( new Administrator(
           "Álisson dos Santos",
         "alisson@email.com",
-        "alissinho123",
+        "abissínio123",
         "81998979931",
-        "Camocim de São Félix",
+        "Camo de São Félix",
         "23/10/1999",
         "Direção",
         "01/01/2020"
