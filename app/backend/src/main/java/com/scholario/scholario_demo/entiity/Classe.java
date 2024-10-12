@@ -1,6 +1,7 @@
 package com.scholario.scholario_demo.entiity;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Table(name = "classes")
@@ -27,7 +29,7 @@ public class Classe {
   @ManyToMany(mappedBy = "classesStudents")
   List<Student> students = new ArrayList<>();
 
-  @OneToMany(mappedBy = "classeAttendances")
+  @OneToMany(mappedBy = "classeAttendances", cascade = CascadeType.ALL)
   private List<Attendance> attendances = new ArrayList<>();
 
   public Classe() {

@@ -1,5 +1,6 @@
 package com.scholario.scholario_demo.entiity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -9,6 +10,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @DiscriminatorValue("student")
@@ -26,8 +28,11 @@ public class Student extends User {
   )
   private List<Classe> classesStudents = new ArrayList<>();
 
-  @OneToMany(mappedBy = "studentAttendances")
+  @OneToMany(mappedBy = "studentAttendances", cascade = CascadeType.ALL)
   private List<Attendance> attendances = new ArrayList<>();
+
+  @OneToMany(mappedBy = "studentGrades", cascade = CascadeType.ALL)
+  private List<Grade> grades = new ArrayList<>();
 
   public Student(){}
 
@@ -78,5 +83,13 @@ public class Student extends User {
 
   public void setClassesStudents(List<Classe> classesStudents) {
     this.classesStudents = classesStudents;
+  }
+
+  public List<Grade> getGrades() {
+    return grades;
+  }
+
+  public void setGrades(List<Grade> grades) {
+    this.grades = grades;
   }
 }

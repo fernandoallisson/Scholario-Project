@@ -109,4 +109,15 @@ public class TeacherService {
     classe.getTeachers().remove(teacher);
     return teacherRepository.save(teacher);
   }
+
+  // Extra methods
+
+  public List<Teacher> getTeacherBySubjectId(Long subjectId) {
+    return teacherRepository.findBySubjectId(subjectId);
+  }
+
+  public List<Teacher> getTeacherByName(String name) {
+    return teacherRepository.findByNameContaining(name);
+  }
+
 }

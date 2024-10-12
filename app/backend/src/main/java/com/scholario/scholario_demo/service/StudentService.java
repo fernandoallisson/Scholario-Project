@@ -31,7 +31,7 @@ public class StudentService {
   }
 
   public Student getStudentById(Long id) throws StudentNotFoundException {
-    return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("USer not found."));
+    return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("User not found."));
   }
 
   public Student createStudent(Student student) {
@@ -82,5 +82,14 @@ public class StudentService {
 
    student.getClassesStudents().remove(classe);
    return studentRepository.save(student);
+  }
+
+  // Extra methods -----------------------------------------------------
+  public List<Student> getStudentByClassId(Long classId) {
+    return studentRepository.findByClassId(classId);
+  }
+
+  public List<Student> getStudentsByName (String name) {
+    return studentRepository.findByNameContaining(name);
   }
 }

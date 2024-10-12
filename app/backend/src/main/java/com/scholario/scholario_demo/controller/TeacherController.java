@@ -34,20 +34,18 @@ public class TeacherController {
   @GetMapping
   public ResponseEntity<List<TeacherDto>> getAllTeachers(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
-      @RequestParam(required = false, defaultValue = "20") int pageSize
-  ) {
+      @RequestParam(required = false, defaultValue = "20") int pageSize) {
 
     List<Teacher> teachers = teacherService.getAllTeachers(pageNumber, pageSize);
 
     return ResponseEntity.ok(
         teachers.stream()
             .map(TeacherDto::fromEntity)
-            .toList()
-    );
+            .toList());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getTeacherById(@PathVariable Long id) throws TeacherNotFoundException{
+  public ResponseEntity<?> getTeacherById(@PathVariable Long id) throws TeacherNotFoundException {
     try {
       TeacherDto teacher = TeacherDto.fromEntity(teacherService.getTeacherById(id));
       return ResponseEntity.ok(teacher);
@@ -57,25 +55,22 @@ public class TeacherController {
   }
 
   @PostMapping
-  public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherCreationDto
-      teacherCreationDto) {
+  public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherCreationDto teacherCreationDto) {
     return ResponseEntity.ok(
         TeacherDto.fromEntity(
-            teacherService.createTeacher(teacherCreationDto.toEntity())
-        )
-    );
+            teacherService.createTeacher(teacherCreationDto.toEntity())));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> updateTeacher(
-      @PathVariable  Long id,
+      @PathVariable Long id,
       @RequestBody TeacherCreationDto teacherCreationDto) {
 
     try {
       TeacherDto teacherDto = TeacherDto.fromEntity(teacherService.updateTeacher(id, teacherCreationDto.toEntity()));
       return ResponseEntity.ok(teacherDto);
     } catch (TeacherNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " +  id + " not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " + id + " not found");
     }
   }
 
@@ -86,7 +81,8 @@ public class TeacherController {
     return ResponseEntity.ok("Usuário de ID: " + id + " foi removido da base de dados");
   }
 
-  // Relacionar um professor a uma disciplina específica ------------------------------- (N:N)
+  // Relacionar um professor a uma disciplina específica
+  // ------------------------------- (N:N)
 
   @PutMapping("/{teacherId}/subjects/{subjectId}")
   public ResponseEntity<TeacherDto> addSubjectToTeacher(
@@ -94,9 +90,7 @@ public class TeacherController {
       @PathVariable Long subjectId) {
     return ResponseEntity.ok(
         TeacherDto.fromEntity(
-            teacherService.addSubjectToTeacher(teacherId, subjectId)
-        )
-    );
+            teacherService.addSubjectToTeacher(teacherId, subjectId)));
   }
 
   @DeleteMapping("/{teacherId}/subjects/{subjectId}")
@@ -105,13 +99,11 @@ public class TeacherController {
       @PathVariable Long subjectId) {
     return ResponseEntity.ok(
         TeacherDto.fromEntity(
-            teacherService.removeSubjectFromTeacher(teacherId, subjectId)
-        )
-    );
+            teacherService.removeSubjectFromTeacher(teacherId, subjectId)));
   }
 
-
-  // Relacionar um professor a uma turma específica ------------------------------- (N:N)
+  // Relacionar um professor a uma turma específica
+  // ------------------------------- (N:N)
 
   @PutMapping("/{teacherId}/classes/{classId}")
   public ResponseEntity<TeacherDto> addClassToTeacher(
@@ -119,9 +111,7 @@ public class TeacherController {
       @PathVariable Long classId) throws ClassNotFoundException, TeacherNotFoundException {
     return ResponseEntity.ok(
         TeacherDto.fromEntity(
-            teacherService.addClassToTeacher(teacherId, classId)
-        )
-    );
+            teacherService.addClassToTeacher(teacherId, classId)));
   }
 
   @DeleteMapping("/{teacherId}/classes/{classId}")
@@ -130,40 +120,27 @@ public class TeacherController {
       @PathVariable Long classId) throws ClassNotFoundException, TeacherNotFoundException {
     return ResponseEntity.ok(
         TeacherDto.fromEntity(
-            teacherService.removeClassFromTeacher(teacherId, classId)
-        )
-    );
+            teacherService.removeClassFromTeacher(teacherId, classId)));
   }
-  
-  // @PutMapping("/{teacherId}/classes/{classId}")
-  // public ResponseEntity<?> addClassToTeacher(
-  //     @PathVariable Long teacherId,
-  //     @PathVariable Long classId) throws TeacherNotFoundException, ClassNotFoundException {
-  //   try {
-  //     TeacherDto updatedTeacher = TeacherDto.fromEntity(
-  //         teacherService.addClassToTeacher(teacherId, classId));
-  //     return ResponseEntity.ok(updatedTeacher);
-  //   } catch (TeacherNotFoundException e) {
-  //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " + teacherId + " not found.");
-  //   } catch (ClassNotFoundException e) {
-  //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class with id " + classId + " not found.");
-  //   }
-  // }
 
-  // @DeleteMapping("/{teacherId}/classes/{classId}")
-  // public ResponseEntity<?> removeClassFromTeacher(
-  //     @PathVariable Long teacherId,
-  //     @PathVariable Long classId) {
-  //   try {
-  //     TeacherDto updatedTeacher = TeacherDto.fromEntity(
-  //         teacherService.removeClassFromTeacher(teacherId, classId));
-  //     return ResponseEntity.ok(updatedTeacher);
-  //   } catch (TeacherNotFoundException e) {
-  //     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-  //         .body("Teacher with id " + teacherId + " not found.");
-  //   } catch (ClassNotFoundException e) {
-  //     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-  //         .body("Class with id " + classId + " not found.");
-  //   }
-  // }
+  // Extra methods -----------------------------------------------------
+  @GetMapping("/subject/{subjectId}")
+  public ResponseEntity<List<TeacherDto>> getTeacherBySubjectId(@PathVariable Long subjectId) {
+    List<Teacher> teachers = teacherService.getTeacherBySubjectId(subjectId);
+
+    return ResponseEntity.ok(
+        teachers.stream()
+            .map(TeacherDto::fromEntity)
+            .toList());
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<List<TeacherDto>> getTeacherByName(@RequestParam String name) {
+    List<Teacher> teacher = teacherService.getTeacherByName(name);
+
+    return ResponseEntity.ok(
+        teacher.stream()
+            .map(TeacherDto::fromEntity)
+            .toList());
+  }
 }

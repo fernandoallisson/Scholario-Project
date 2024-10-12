@@ -28,7 +28,7 @@ public class ClassService {
     return page.toList();
   }
 
-  public com.scholario.scholario_demo.entiity.Classe getClassById(Long id) throws ClassNotFoundException{
+  public Classe getClassById(Long id) throws ClassNotFoundException{
     return classRepository.findById(id)
         .orElseThrow(() -> new ClassNotFoundException("Class not found."));
   }

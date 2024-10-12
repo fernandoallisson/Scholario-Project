@@ -37,15 +37,13 @@ public class StudentController {
   @GetMapping
   public ResponseEntity<List<StudentDto>> getAllStudents(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
-      @RequestParam(required = false, defaultValue = "20") int pageSize
-  ) {
+      @RequestParam(required = false, defaultValue = "20") int pageSize) {
     List<Student> students = studentService.getAllStudents(pageNumber, pageSize);
 
     return ResponseEntity.ok(
         students.stream()
             .map(StudentDto::fromEntity)
-            .toList()
-    );
+            .toList());
   }
 
   @GetMapping("/{id}")
@@ -56,27 +54,25 @@ public class StudentController {
     } catch (StudentNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + id + " not found.");
     }
-  } 
+  }
 
   @PostMapping
   public ResponseEntity<StudentDto> createStudent(@RequestBody StudentCreationDto studentCreationDto) {
     return ResponseEntity.ok(
         StudentDto.fromEntity(
-            studentService.createStudent(studentCreationDto.toEntity())
-        )
-    );
+            studentService.createStudent(studentCreationDto.toEntity())));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> updateStudent(
-      @PathVariable  Long id,
+      @PathVariable Long id,
       @RequestBody StudentCreationDto studentCreationDto) {
 
     try {
       StudentDto studentDto = StudentDto.fromEntity(studentService.updateStudent(id, studentCreationDto.toEntity()));
       return ResponseEntity.ok(studentDto);
     } catch (StudentNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " +  id + " not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + id + " not found");
     }
   }
 
@@ -102,17 +98,40 @@ public class StudentController {
     }
   }
 
-@DeleteMapping("/{studentId}/classes/{classId}")
-public ResponseEntity<?> removeClassFromStudent(
-    @PathVariable Long studentId,
-    @PathVariable Long classId) {
-  try {
-    StudentDto updatedStudent = StudentDto.fromEntity(studentService.removeClassFromStudent(studentId, classId));
-    return ResponseEntity.ok(updatedStudent);
-  } catch (StudentNotFoundException e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + studentId + " not found.");
-  } catch (ClassNotFoundException e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class with id " + classId + " not found.");
+  @DeleteMapping("/{studentId}/classes/{classId}")
+  public ResponseEntity<?> removeClassFromStudent(
+      @PathVariable Long studentId,
+      @PathVariable Long classId) {
+    try {
+      StudentDto updatedStudent = StudentDto.fromEntity(studentService.removeClassFromStudent(studentId, classId));
+      return ResponseEntity.ok(updatedStudent);
+    } catch (StudentNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with id " + studentId + " not found.");
+    } catch (ClassNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class with id " + classId + " not found.");
+    }
   }
-}
+
+  // Extra methods -----------------------------------------------------
+
+  @GetMapping("/search")
+  public ResponseEntity<List<StudentDto>> getStudentsByName(@RequestParam String name) {
+    List<Student> students = studentService.getStudentsByName(name);
+
+    return ResponseEntity.ok(
+        students.stream()
+            .map(StudentDto::fromEntity)
+            .toList());
+  }
+
+  @GetMapping("/class/{classId}")
+  public ResponseEntity<List<StudentDto>> getStudentByClassId(@PathVariable Long classId) {
+    List<Student> students = studentService.getStudentByClassId(classId);
+
+    return ResponseEntity.ok(
+        students.stream()
+            .map(StudentDto::fromEntity)
+            .toList());
+  }
+
 }
