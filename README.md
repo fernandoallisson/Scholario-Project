@@ -119,6 +119,7 @@ Endpoint Disponíveis
 
 <details>
 <summary><strong>Rotas para Administradores</strong></summary>
+  
 | Método HTTP | Rota                                            | Descrição                                             |
 |-------------|-------------------------------------------------|-------------------------------------------------------|
 | GET         | `/administrators`                                | Busca um administradore específico por ID             |
@@ -126,12 +127,14 @@ Endpoint Disponíveis
 | PUT         | `/administrators/{id}`                           | Atualiza um administrador                             |
 | POST        | `/administrators`                                | Cria um novo administrador                            |
 | DELETE      | `/administrators/{id}`                           | Deleta um administrador específica                    |
+
 </details>
 
 ## Para Disciplinas
 
 <details>
 <summary><strong>Rotas para Disciplinas</strong></summary>
+  
 | Método HTTP | Rota                                            | Descrição                                             |
 |-------------|-------------------------------------------------|-------------------------------------------------------|
 | GET         | `/subjects`                                     | Busca uma disciplina específica por ID                |
@@ -139,12 +142,14 @@ Endpoint Disponíveis
 | POST        | `/subjects`                                     | Cria uma nova disciplina                              |
 | PUT         | `/subjects/{id}`                                | Atualiza uma disciplina                               |
 | DELETE      | `/subjects/{id}`                                | Deleta uma disciplina específica                      |
+
 </details>
 
 ## Para Turmas
 
 <details>
 <summary><strong>Rotas para Turmas</strong></summary>
+  
 | Método HTTP | Rota                                            | Descrição                                             |
 |-------------|-------------------------------------------------|-------------------------------------------------------|
 | GET         | `/classes`                                     | Busca uma turma específica por ID                      |
@@ -152,12 +157,14 @@ Endpoint Disponíveis
 | POST        | `/classes`                                     | Cria uma nova turma                                    |
 | PUT         | `/classes/{id}`                                | Atualiza uma turma                                     |
 | DELETE      | `/classes/{id}`                                | Deleta uma turma específica                            |
+
 </details>
 
 ## Para Registro de Presenças
 
 <details>
 <summary><strong>Rotas para Presenças</strong></summary>
+  
 | Método HTTP | Rota                                            | Descrição                                               |
 |-------------|-------------------------------------------------|-------------------------------------------------------  |
 | GET         | `/attendances`                                  | Busca todas os registros de frequência                  |
@@ -167,6 +174,7 @@ Endpoint Disponíveis
 | POST        | `/attendances/{studentId}/{classId}`            | Registra de frequência com base no estudante e turma    |
 | PUT         | `/attendances/{id}`                             | Atualiza um registro de frequência pelo id da frequência|
 | DELETE      | `/attendances/{id}`                             | Deleta uma frequência específica                        |
+
 </details>
 
 ## Para Registro de Notas
