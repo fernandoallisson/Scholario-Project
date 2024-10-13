@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class gradeController {
   }
 
   @PostMapping("/{subjectId}/{studentId}")
+  @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
   public ResponseEntity<GradeDto> createGrade(@RequestBody GradeCreationDto gradeCreationDto,
       @PathVariable Long studentId, @PathVariable Long subjectId) {
     GradeDto createdGrade = GradeDto.fromEntity(gradeService.createGrade(gradeCreationDto.toEntity(), studentId, subjectId));
@@ -82,7 +84,8 @@ public class gradeController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateGrade(@PathVariable Long id, @RequestBody GradeCreationDto gradeCreationDto) {
+  @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
+    public ResponseEntity<?> updateGrade(@PathVariable Long id, @RequestBody GradeCreationDto gradeCreationDto) {
     try {
       GradeDto updatedGrade = GradeDto.fromEntity(gradeService.updateGrade(id, gradeCreationDto.toEntity()));
       return ResponseEntity.ok(updatedGrade);
@@ -92,6 +95,7 @@ public class gradeController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> deleteGrade(@PathVariable Long id) {
     gradeService.deleteGrade(id);
 

@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,7 @@ public class ClassController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<ClassDto> createClass(@RequestBody ClassCreationDto
       classCreationDto) {
     return ResponseEntity.ok(
@@ -66,6 +68,7 @@ public class ClassController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> updateClass(@PathVariable Long id, @RequestBody ClassCreationDto
       classCreationDto) {
     try {
@@ -77,6 +80,7 @@ public class ClassController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<String> deleteClass(@PathVariable Long id) {
     classService.deleteClass(id);
     return ResponseEntity.ok("Turma de ID: " + id + " foi removido da base de dados");

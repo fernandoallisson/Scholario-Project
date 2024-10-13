@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class AdministratorController {
   }
 
   @GetMapping
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<List<AdministratorDto>> getAllAdministrators(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
@@ -45,6 +47,7 @@ public class AdministratorController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> getAdministratorById(@PathVariable Long id)
   throws AdministratorNotfoundException
   {
@@ -57,6 +60,7 @@ public class AdministratorController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<AdministratorDto> createAdministrator(
       @RequestBody AdministratorCreationDto administratorCreationDto
   ) {
@@ -67,6 +71,7 @@ public class AdministratorController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> updateAdministrator(
       @PathVariable Long id,
       @RequestBody AdministratorCreationDto administratorCreationDto
@@ -81,6 +86,7 @@ public class AdministratorController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<String> deleteAdministrator(@PathVariable Long id) {
     administratorService.deleteAdministrator(id);
     return ResponseEntity.ok("Administrador de ID: " + id + " foi removido da base de dados");

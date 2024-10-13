@@ -195,6 +195,113 @@ Endpoint Disponíveis
 
 </details>
 
+## Segurança da API
+
+Este projeto utiliza autenticação e autorização para garantir a segurança das rotas. As seguintes rotas estão disponíveis e suas respectivas permissões são detalhadas abaixo:
+
+<details>
+<summary><strong>/teachers</strong></summary>
+
+### Rotas Acessíveis
+- `GET /teachers`: Permite a qualquer usuário autenticado visualizar a lista de todos os professores. Não requer permissões específicas.
+- `GET /teachers/{id}`: Qualquer usuário autenticado pode acessar as informações de um professor específico.
+### Rotas Protegidas
+- `POST /teachers`: Qualquer usuário autenticado pode criar um novo professor.
+- `PUT /teachers/{id}`: Apenas usuários com a autoridade "teacher" podem atualizar seus próprios dados.
+- `DELETE /teachers/{id}`: Apenas usuários com a autoridade "admin" podem remover um professor do sistema.
+- `PUT /teachers/{teacherId}/subjects/{subjectId}`: Apenas usuários com a autoridade "admin" podem associar uma disciplina a um professor.
+- `DELETE /teachers/{teacherId}/subjects/{subjectId}`: Apenas usuários com a autoridade "admin" podem remover a associação de uma disciplina com um professor.
+- `PUT /teachers/{teacherId}/classes/{classId}`: Apenas usuários com a autoridade "admin" podem associar uma turma a um professor.
+- `DELETE /teachers/{teacherId}/classes/{classId}`: Apenas usuários com a autoridade "admin" podem remover a associação de uma turma com um professor.
+- `GET /teachers/subject/{subjectId}`: Permite que qualquer usuário autenticado visualize os professores associados a uma disciplina específica.
+- `GET /teachers/search?name`: Qualquer usuário autenticado pode buscar professores pelo nome.
+</details>
+
+<details>
+<summary><strong>/students</strong></summary>
+
+### Rotas Acessíveis
+- `GET /students`: Permite que qualquer usuário autenticado visualize a lista de todos os estudantes. Não requer permissões específicas.
+- `GET /students/{id}`: Qualquer usuário autenticado pode acessar as informações de um estudante específico.
+- `GET /students/search`: Permite a busca de estudantes pelo nome, acessível a todos os usuários autenticados.
+- `GET /students/class/{classId}`: Permite que qualquer usuário autenticado visualize todos os estudantes associados a uma determinada classe.
+
+### Rotas Protegidas
+- `POST /students`: Qualquer usuário autenticado pode criar novos estudantes.
+- `PUT /students/{id}`: Qualquer usuário autenticado pode atualizar os detalhes de um estudante existente.
+- `DELETE /students/{id}`: Apenas usuários com a autoridade "admin" podem remover um estudante do sistema.
+- `PUT /students/{studentId}/classes/{classId}`: Apenas usuários com a autoridade "admin" podem associar um estudante a uma classe específica.
+- `DELETE /students/{studentId}/classes/{classId}`: Apenas usuários com a autoridade "admin" podem remover um estudante de uma classe específica.
+</details>
+
+<details>
+
+<summary><strong>/administrators</strong></summary>
+
+### Rotas Acessíveis
+- `GET /administrators`: Permite que apenas usuários com a autoridade "admin" visualizem a lista de todos os administradores registrados.
+- `GET /administrators/{id}`: Permite que apenas usuários com a autoridade "admin" acessem as informações de um administrador específico, identificado pelo seu ID.
+### Rotas Protegidas
+- `POST /administrators`: Apenas usuários com a autoridade "admin" podem criar um novo administrador no sistema.
+- `PUT /administrators/{id}`: Apenas usuários com a autoridade "admin" podem atualizar as informações de um administrador existente.
+- `DELETE /administrators/{id}`: Apenas usuários com a autoridade "admin" podem excluir um administrador do sistema.
+</details>
+<details>
+
+<summary><strong>/Classes</strong></summary>
+
+## Rotas Acessíveis
+- `GET /classes`: Permite que qualquer usuário autenticado visualize a lista de todas as turmas.
+- `GET /classes/{id}`: Qualquer usuário autenticado pode acessar as informações de uma turma específica.
+## Rotas Protegidas
+- `POST /classes`: Apenas usuários com a autoridade "admin" podem criar uma nova turma.
+- `PUT /classes/{id}`: Apenas usuários com a autoridade "admin" podem atualizar uma turma existente.
+- `DELETE /classes/{id}`: Apenas usuários com a autoridade "admin" podem excluir uma turma do sistema.
+</details>
+
+<details>
+
+<summary><strong>/subjects</strong></summary>
+
+### Rotas Acessíveis
+- `GET /subjects`: Permite a qualquer usuário autenticado visualizar a lista de todas as disciplinas. Não requer permissões específicas.
+- `GET /subjects/{id}`: Qualquer usuário autenticado pode acessar as informações de uma disciplina específica.
+
+### Rotas Protegidas
+- `POST /subjects`: Apenas usuários com a autoridade "admin" podem criar novas disciplinas.
+- `PUT /subjects/{id}`: Apenas usuários com a autoridade "admin" podem atualizar os detalhes de uma disciplina existente.
+- `DELETE /subjects/{id}`: Apenas usuários com a autoridade "admin" podem remover uma disciplina do sistema.
+</details>
+<details>
+<summary><strong>/grades</strong></summary>
+
+### Rotas Acessíveis
+- `GET /grades`: Permite que qualquer usuário autenticado visualize a lista de todas as notas.
+- `GET /grades/{id}`: Qualquer usuário autenticado pode acessar as informações de uma nota específica.
+- `GET /grades/student/{studentId}`: Permite que qualquer usuário autenticado visualize todas as notas de um estudante específico.
+- `GET /grades/subject/{subjectId}`: Permite que qualquer usuário autenticado visualize todas as notas de uma disciplina específica.
+- `GET /grades/subject/{subjectId}/student/{studentId}`: Permite que qualquer usuário autenticado visualize as notas de um estudante em uma disciplina específica.
+
+### Rotas Protegidas
+- `POST /grades/{subjectId}/{studentId}`: Apenas usuários com a autoridade "admin" ou "teacher" podem criar uma nova nota para um estudante em uma disciplina.
+- `PUT /grades/{id}`: Apenas usuários com a autoridade "admin" ou "teacher" podem atualizar uma nota existente.
+- `DELETE /grades/{id}`: Apenas usuários com a autoridade "admin" podem excluir uma nota do sistema.
+</details>
+<details>
+<summary><strong>/attendances</strong></summary>
+
+### Rotas Acessíveis
+- `GET /attendances`: Permite que qualquer usuário autenticado visualize a lista de todas as presenças registradas.
+- `GET /attendances/student/{studentId}`: Permite que qualquer usuário autenticado visualize as presenças de um aluno - específico, identificado pelo seu ID.
+- `GET /attendances/class/{classId}`: Permite que qualquer usuário autenticado visualize as presenças registradas em uma turma específica, identificada pelo seu ID.
+- `GET /attendances/{id}`: Qualquer usuário autenticado pode acessar as informações de uma presença específica, identificada pelo seu ID.
+### Rotas Protegidas
+- `POST /attendances/{studentId}/{classId}`: Apenas usuários com a autoridade "admin" ou "teacher" podem registrar a presença de um aluno em uma turma.
+- `PUT /attendances/{id}`: Apenas usuários com a autoridade "admin" ou "teacher" podem atualizar uma presença existente.
+- `DELETE /attendances/{id}`: Apenas usuários com a autoridade "admin" podem excluir um registro de presença do sistema.
+</details>
+
+
 ## Desafios e Aprendizados 🚀
 
 Um dos maiores desafios enfrentados durante o desenvolvimento foi a configuração correta das relações entre as entidades. Em particular, garantir que os relacionamentos entre turmas, alunos e presenças estivessem configurados para evitar loops infinitos na serialização.

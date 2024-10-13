@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,6 +78,7 @@ public class StudentController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
     studentService.deleteStudent(id);
 
@@ -85,6 +87,7 @@ public class StudentController {
 
   // Relacionar um estudante a uma classe -------------- N:N
   @PutMapping("/{studentId}/classes/{classId}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> addClassToStudent(
       @PathVariable Long studentId,
       @PathVariable Long classId) {
@@ -99,6 +102,7 @@ public class StudentController {
   }
 
   @DeleteMapping("/{studentId}/classes/{classId}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> removeClassFromStudent(
       @PathVariable Long studentId,
       @PathVariable Long classId) {

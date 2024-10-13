@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +58,7 @@ public class SubjectController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<SubjectDto> createSubject(@RequestBody  SubjectCreationDto subjectCreationDto) {
     return ResponseEntity.ok(
         SubjectDto.fromEntity(
@@ -66,6 +68,7 @@ public class SubjectController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> updateSubject(
       @PathVariable  Long id,
       @RequestBody SubjectCreationDto subjectCreationDto) {
@@ -79,6 +82,7 @@ public class SubjectController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<String> deleteSubject(@PathVariable Long id) {
     subjectService.deleteSubject(id);
     return ResponseEntity.ok("A disciplina de ID : " + id + " foi removida da base de dados");

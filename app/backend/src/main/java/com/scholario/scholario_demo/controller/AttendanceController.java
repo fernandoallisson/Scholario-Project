@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -25,6 +26,7 @@ public class AttendanceController {
   }
 
   @PostMapping("{studentId}/{classId}")
+  @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
   public ResponseEntity<?> createAttendance(@RequestBody AttendanceCreationDto attendanceCreationDto,
       @PathVariable Long studentId, @PathVariable Long classId) {
     try {
@@ -86,6 +88,7 @@ public class AttendanceController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
   public ResponseEntity<?> updateAttendance(@PathVariable Long id, @RequestBody AttendanceCreationDto attendanceCreationDto) {
     try {
       AttendanceDto attendanceDto = AttendanceDto.fromEntity(attendanceService.updateAttendance(id, attendanceCreationDto.toEntity()));
@@ -96,6 +99,7 @@ public class AttendanceController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> deleteAttendance(@PathVariable Long id) {
     attendanceService.deleteAttendance(id);
     return ResponseEntity.ok("Attendance with id " + id + " deleted.");
