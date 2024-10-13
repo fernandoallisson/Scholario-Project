@@ -53,7 +53,7 @@ public class TeacherService {
   }
 
   public Teacher updateTeacher(Long id, Teacher teacher) {
-    Teacher teacherFound = new Teacher();
+    Teacher teacherFound = getTeacherById(id);
 
     teacherFound.setName(teacher.getName());
     teacherFound.setEmail(teacher.getEmail());

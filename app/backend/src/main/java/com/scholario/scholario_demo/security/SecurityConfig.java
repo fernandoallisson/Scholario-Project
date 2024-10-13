@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,14 +15,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
   private final CustomUserDetailsService customUserDetailsService;
+  private final JwtFilter jwtFilter;
 
   @Autowired
-  public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+  public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtFilter jwtFilter) {
     this.customUserDetailsService = customUserDetailsService;
+    this.jwtFilter = jwtFilter;
   }
 
   @Bean
@@ -31,13 +35,20 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
+        .authorizeHttpRequests( authorize -> authorize
+            .requestMatchers(HttpMethod.POST, "/students").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/teachers").permitAll()
+            .requestMatchers(HttpMethod.POST, "/administrators").permitAll()
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling(exceptions -> exceptions
             .authenticationEntryPoint((request, response, authException) -> {
               response.setContentType("application/json");
               response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
               response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"" + authException.getMessage() + "\"}");
             }));
-
 
     return http.build();
   }
