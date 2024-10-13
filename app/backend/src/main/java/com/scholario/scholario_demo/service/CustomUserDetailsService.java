@@ -32,9 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     User user = userRepository.findByEmail(username)
         .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
 
-    System.out.println("EMAILLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL " + username);
-    System.out.println("TIPOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO " + user.getUserType());
-
     return switch (user.getUserType()) {
       case "admin" -> administratorService.loadAdministratorByEmail(username);
       case "student" -> studentService.loadStudentByEmail(username);

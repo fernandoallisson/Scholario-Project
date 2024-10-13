@@ -20,24 +20,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Administrator controller.
+ */
 @RestController
 @RequestMapping("/administrators")
 public class AdministratorController {
 
   private final AdministratorService administratorService;
 
+  /**
+   * Instantiates a new Administrator controller.
+   *
+   * @param administratorService the administrator service
+   */
   @Autowired
   public AdministratorController(AdministratorService administratorService) {
     this.administratorService = administratorService;
   }
 
+  /**
+   * Gets all administrators.
+   *
+   * @param pageNumber the page number
+   * @param pageSize   the page size
+   * @return the all administrators
+   */
   @GetMapping
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<List<AdministratorDto>> getAllAdministrators(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
   ) {
-    List<Administrator> administratorList = administratorService.getAllAdministrators(pageNumber, pageSize);
+    List<Administrator> administratorList =
+        administratorService.getAllAdministrators(pageNumber, pageSize);
 
     return ResponseEntity.ok(
         administratorList.stream()
@@ -46,21 +62,34 @@ public class AdministratorController {
     );
   }
 
+  /**
+   * Gets administrator by id.
+   *
+   * @param id the id
+   * @return the administrator by id
+   * @throws AdministratorNotfoundException the administrator notfound exception
+   */
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> getAdministratorById(@PathVariable Long id)
-  throws AdministratorNotfoundException
-  {
+      throws AdministratorNotfoundException {
     try {
-      AdministratorDto administratorDto = AdministratorDto.fromEntity(administratorService.getAdministratorById(id));
+      AdministratorDto administratorDto =
+          AdministratorDto.fromEntity(administratorService.getAdministratorById(id));
       return ResponseEntity.ok(administratorDto);
     } catch (AdministratorNotfoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrator with id " +  id + " not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("Administrator with id " +  id + " not found");
     }
   }
 
+  /**
+   * Create administrator response entity.
+   *
+   * @param administratorCreationDto the administrator creation dto
+   * @return the response entity
+   */
   @PostMapping
-  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<AdministratorDto> createAdministrator(
       @RequestBody AdministratorCreationDto administratorCreationDto
   ) {
@@ -70,6 +99,14 @@ public class AdministratorController {
     );
   }
 
+  /**
+   * Update administrator response entity.
+   *
+   * @param id                       the id
+   * @param administratorCreationDto the administrator creation dto
+   * @return the response entity
+   * @throws AdministratorNotfoundException the administrator notfound exception
+   */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> updateAdministrator(
@@ -81,10 +118,17 @@ public class AdministratorController {
           administratorService.updateAdministrator(id, administratorCreationDto.toEntity()));
       return ResponseEntity.ok(administratorDto);
     } catch (AdministratorNotfoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrator with id " +  id + " not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("Administrator with id " +  id + " not found");
     }
   }
 
+  /**
+   * Delete administrator response entity.
+   *
+   * @param id the id
+   * @return the response entity
+   */
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<String> deleteAdministrator(@PathVariable Long id) {

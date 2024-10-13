@@ -8,14 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdministratorService {
 
-  private  final AdministratorRepository administratorRepository;
+  private final AdministratorRepository administratorRepository;
 
   public AdministratorService(AdministratorRepository administratorRepository) {
     this.administratorRepository = administratorRepository;
@@ -30,7 +29,8 @@ public class AdministratorService {
   }
 
   public Administrator getAdministratorById(Long id) throws AdministratorNotfoundException {
-    return administratorRepository.findById(id).orElseThrow(() -> new AdministratorNotfoundException("Administrator not found."));
+    return administratorRepository.findById(id)
+        .orElseThrow(() -> new AdministratorNotfoundException("Administrator not found."));
   }
 
   public Administrator createAdministrator(Administrator administrator) {
@@ -62,9 +62,8 @@ public class AdministratorService {
 
   // Security
 
-
   public UserDetails loadAdministratorByEmail(String email) throws AdministratorNotfoundException {
     return administratorRepository.findByEmail(email).orElseThrow(
-      () -> new AdministratorNotfoundException("Administrator not found."));
+        () -> new AdministratorNotfoundException("Administrator not found."));
   }
 }
