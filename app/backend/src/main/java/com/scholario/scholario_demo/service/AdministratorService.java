@@ -7,6 +7,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +34,9 @@ public class AdministratorService {
   }
 
   public Administrator createAdministrator(Administrator administrator) {
+    String hashedPassword = new BCryptPasswordEncoder().encode(administrator.getPassword());
+
+    administrator.setPassword(hashedPassword);
     return administratorRepository.save(administrator);
   }
 
@@ -52,5 +58,13 @@ public class AdministratorService {
 
   public void deleteAdministrator(Long id) {
     administratorRepository.deleteById(id);
+  }
+
+  // Security
+
+
+  public UserDetails loadAdministratorByEmail(String email) throws AdministratorNotfoundException {
+    return administratorRepository.findByEmail(email).orElseThrow(
+      () -> new AdministratorNotfoundException("Administrator not found."));
   }
 }

@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,6 +39,14 @@ public class StudentService {
   }
 
   public Student createStudent(Student student) {
+
+    String hashedPassword = new BCryptPasswordEncoder()
+        .encode(student.getPassword());
+
+    student.setPassword(hashedPassword);
+
+    // Chamar método para verificação antes de salvar
+
     return studentRepository.save(student);
   }
 
@@ -91,5 +103,13 @@ public class StudentService {
 
   public List<Student> getStudentsByName (String name) {
     return studentRepository.findByNameContaining(name);
+  }
+
+  //  Security
+
+  public UserDetails loadStudentByEmail(String email) throws UsernameNotFoundException {
+    return studentRepository.findByEmail(email).orElseThrow(
+        () -> new UsernameNotFoundException(email)
+    );
   }
 }

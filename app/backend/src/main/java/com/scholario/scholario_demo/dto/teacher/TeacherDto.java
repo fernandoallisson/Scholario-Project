@@ -9,10 +9,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public record TeacherDto(
-    Long id, String name, String email, String password, String phone, String address,
+    Long id, String name, String email, String phone, String address,
     String birthdate, String department, String hireDate,
-    List<SubjectDto> subjects, List<ClassDto> classes
-) {
+    List<SubjectDto> subjects, List<ClassDto> classes) {
   public static TeacherDto fromEntity(Teacher teacher) {
     if (teacher == null) {
       throw new IllegalArgumentException("Teacher must not be null");
@@ -38,15 +37,13 @@ public record TeacherDto(
         teacher.getId(),
         teacher.getName(),
         teacher.getEmail(),
-        teacher.getPassword(),
         teacher.getPhone(),
         teacher.getAddress(),
         teacher.getBirthdate(),
         teacher.getDepartment(),
         teacher.getHireDate(),
         subjectDtos,
-        classDtos
-    );
+        classDtos);
   }
 
 }
