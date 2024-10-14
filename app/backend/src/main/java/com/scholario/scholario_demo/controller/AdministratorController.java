@@ -3,7 +3,7 @@ package com.scholario.scholario_demo.controller;
 import com.scholario.scholario_demo.dto.adminstrator.AdministratorCreationDto;
 import com.scholario.scholario_demo.dto.adminstrator.AdministratorDto;
 import com.scholario.scholario_demo.entiity.Administrator;
-import com.scholario.scholario_demo.exception.administrator.AdministratorNotfoundException;
+import com.scholario.scholario_demo.exception.administrator.AdministratorFoundException;
 import com.scholario.scholario_demo.service.AdministratorService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,17 +67,17 @@ public class AdministratorController {
    *
    * @param id the id
    * @return the administrator by id
-   * @throws AdministratorNotfoundException the administrator notfound exception
+   * @throws AdministratorFoundException the administrator notfound exception
    */
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> getAdministratorById(@PathVariable Long id)
-      throws AdministratorNotfoundException {
+      throws AdministratorFoundException {
     try {
       AdministratorDto administratorDto =
           AdministratorDto.fromEntity(administratorService.getAdministratorById(id));
       return ResponseEntity.ok(administratorDto);
-    } catch (AdministratorNotfoundException e) {
+    } catch (AdministratorFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body("Administrator with id " +  id + " not found");
     }
@@ -105,19 +105,19 @@ public class AdministratorController {
    * @param id                       the id
    * @param administratorCreationDto the administrator creation dto
    * @return the response entity
-   * @throws AdministratorNotfoundException the administrator notfound exception
+   * @throws AdministratorFoundException the administrator notfound exception
    */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> updateAdministrator(
       @PathVariable Long id,
       @RequestBody AdministratorCreationDto administratorCreationDto
-  ) throws AdministratorNotfoundException {
+  ) throws AdministratorFoundException {
     try {
       AdministratorDto administratorDto = AdministratorDto.fromEntity(
           administratorService.updateAdministrator(id, administratorCreationDto.toEntity()));
       return ResponseEntity.ok(administratorDto);
-    } catch (AdministratorNotfoundException e) {
+    } catch (AdministratorFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body("Administrator with id " +  id + " not found");
     }

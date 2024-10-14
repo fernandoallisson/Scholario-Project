@@ -2,6 +2,9 @@ package com.scholario.scholario_demo.dto.grade;
 
 import com.scholario.scholario_demo.entiity.Grade;
 
+/**
+ * The type Grade dto.
+ */
 public record GradeDto(
     Long id,
     Long studentId,
@@ -11,6 +14,12 @@ public record GradeDto(
     double gradeValue,
     String date) {
 
+  /**
+   * From entity grade dto.
+   *
+   * @param grade the grade
+   * @return the grade dto
+   */
   public static GradeDto fromEntity(Grade grade) {
     return new GradeDto(
         grade.getId(),

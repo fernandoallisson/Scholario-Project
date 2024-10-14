@@ -7,7 +7,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * The type Grade.
+ */
+@Setter
+@Getter
 @Entity
 @Table(name = "grades")
 public class Grade {
@@ -27,51 +34,21 @@ public class Grade {
   @JoinColumn(name = "subject_id")
   private Subject subjectGrades;
 
+  /**
+   * Instantiates a new Grade.
+   */
   public Grade() {
   }
 
+  /**
+   * Instantiates a new Grade.
+   *
+   * @param gradeValue the grade value
+   * @param date       the date
+   */
   public Grade(double gradeValue, String date) {
     this.gradeValue = gradeValue;
     this.date = date;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public double getGradeValue() {
-    return gradeValue;
-  }
-
-  public void setGradeValue(double gradeValue) {
-    this.gradeValue = gradeValue;
-  }
-
-  public String getDate() {
-    return date;
-  }
-
-  public void setDate(String date) {
-    this.date = date;
-  }
-
-  public Student getStudentGrades() {
-    return studentGrades;
-  }
-
-  public void setStudentGrades(Student studentGrades) {
-    this.studentGrades = studentGrades;
-  }
-
-  public Subject getSubjectGrades() {
-    return subjectGrades;
-  }
-
-  public void setSubjectGrades(Subject subjectGrades) {
-    this.subjectGrades = subjectGrades;
-  }
 }

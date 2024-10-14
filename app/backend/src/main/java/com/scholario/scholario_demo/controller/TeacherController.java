@@ -21,17 +21,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Teacher controller.
+ */
 @RestController
 @RequestMapping("/teachers")
 public class TeacherController {
 
   private final TeacherService teacherService;
 
+  /**
+   * Instantiates a new Teacher controller.
+   *
+   * @param teacherService the teacher service
+   */
   @Autowired
   public TeacherController(TeacherService teacherService) {
     this.teacherService = teacherService;
   }
 
+  /**
+   * Gets all teachers.
+   *
+   * @param pageNumber the page number
+   * @param pageSize   the page size
+   * @return the all teachers
+   */
   @GetMapping
   public ResponseEntity<List<TeacherDto>> getAllTeachers(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
@@ -45,23 +60,45 @@ public class TeacherController {
             .toList());
   }
 
+  /**
+   * Gets teacher by id.
+   *
+   * @param id the id
+   * @return the teacher by id
+   * @throws TeacherNotFoundException the teacher not found exception
+   */
   @GetMapping("/{id}")
   public ResponseEntity<?> getTeacherById(@PathVariable Long id) throws TeacherNotFoundException {
     try {
       TeacherDto teacher = TeacherDto.fromEntity(teacherService.getTeacherById(id));
       return ResponseEntity.ok(teacher);
     } catch (TeacherNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " + id + " not found.");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("Teacher with id " + id + " not found.");
     }
   }
 
+  /**
+   * Create teacher response entity.
+   *
+   * @param teacherCreationDto the teacher creation dto
+   * @return the response entity
+   */
   @PostMapping
-  public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherCreationDto teacherCreationDto) {
+  public ResponseEntity<TeacherDto> createTeacher(
+      @RequestBody TeacherCreationDto teacherCreationDto) {
     return ResponseEntity.ok(
         TeacherDto.fromEntity(
             teacherService.createTeacher(teacherCreationDto.toEntity())));
   }
 
+  /**
+   * Update teacher response entity.
+   *
+   * @param id                 the id
+   * @param teacherCreationDto the teacher creation dto
+   * @return the response entity
+   */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('teacher')")
   public ResponseEntity<?> updateTeacher(
@@ -69,13 +106,21 @@ public class TeacherController {
       @RequestBody TeacherCreationDto teacherCreationDto) {
 
     try {
-      TeacherDto teacherDto = TeacherDto.fromEntity(teacherService.updateTeacher(id, teacherCreationDto.toEntity()));
+      TeacherDto teacherDto = TeacherDto.fromEntity(
+          teacherService.updateTeacher(id, teacherCreationDto.toEntity()));
       return ResponseEntity.ok(teacherDto);
     } catch (TeacherNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with id " + id + " not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("Teacher with id " + id + " not found");
     }
   }
 
+  /**
+   * Delete teacher response entity.
+   *
+   * @param id the id
+   * @return the response entity
+   */
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<String> deleteTeacher(@PathVariable Long id) {
@@ -88,6 +133,13 @@ public class TeacherController {
   // ------------------------------- (N:N)
 
 
+  /**
+   * Add subject to teacher response entity.
+   *
+   * @param teacherId the teacher id
+   * @param subjectId the subject id
+   * @return the response entity
+   */
   @PutMapping("/{teacherId}/subjects/{subjectId}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<TeacherDto> addSubjectToTeacher(
@@ -98,6 +150,13 @@ public class TeacherController {
             teacherService.addSubjectToTeacher(teacherId, subjectId)));
   }
 
+  /**
+   * Remove subject from teacher response entity.
+   *
+   * @param teacherId the teacher id
+   * @param subjectId the subject id
+   * @return the response entity
+   */
   @DeleteMapping("/{teacherId}/subjects/{subjectId}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<TeacherDto> removeSubjectFromTeacher(
@@ -111,6 +170,15 @@ public class TeacherController {
   // Relacionar um professor a uma turma específica
   // ------------------------------- (N:N)
 
+  /**
+   * Add class to teacher response entity.
+   *
+   * @param teacherId the teacher id
+   * @param classId   the class id
+   * @return the response entity
+   * @throws ClassNotFoundException   the class not found exception
+   * @throws TeacherNotFoundException the teacher not found exception
+   */
   @PutMapping("/{teacherId}/classes/{classId}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<TeacherDto> addClassToTeacher(
@@ -121,6 +189,15 @@ public class TeacherController {
             teacherService.addClassToTeacher(teacherId, classId)));
   }
 
+  /**
+   * Remove class from teacher response entity.
+   *
+   * @param teacherId the teacher id
+   * @param classId   the class id
+   * @return the response entity
+   * @throws ClassNotFoundException   the class not found exception
+   * @throws TeacherNotFoundException the teacher not found exception
+   */
   @DeleteMapping("/{teacherId}/classes/{classId}")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<TeacherDto> removeClassFromTeacher(
@@ -131,6 +208,12 @@ public class TeacherController {
             teacherService.removeClassFromTeacher(teacherId, classId)));
   }
 
+  /**
+   * Gets teacher by subject id.
+   *
+   * @param subjectId the subject id
+   * @return the teacher by subject id
+   */
   // Extra methods -----------------------------------------------------
   @GetMapping("/subject/{subjectId}")
   public ResponseEntity<List<TeacherDto>> getTeacherBySubjectId(@PathVariable Long subjectId) {
@@ -142,6 +225,12 @@ public class TeacherController {
             .toList());
   }
 
+  /**
+   * Gets teacher by name.
+   *
+   * @param name the name
+   * @return the teacher by name
+   */
   @GetMapping("/search")
   public ResponseEntity<List<TeacherDto>> getTeacherByName(@RequestParam String name) {
     List<Teacher> teacher = teacherService.getTeacherByName(name);

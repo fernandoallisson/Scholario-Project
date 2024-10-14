@@ -18,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * The type Security config.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
@@ -25,12 +28,25 @@ public class SecurityConfig {
   private final CustomUserDetailsService customUserDetailsService;
   private final JwtFilter jwtFilter;
 
+  /**
+   * Instantiates a new Security config.
+   *
+   * @param customUserDetailsService the custom user details service
+   * @param jwtFilter                the jwt filter
+   */
   @Autowired
   public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtFilter jwtFilter) {
     this.customUserDetailsService = customUserDetailsService;
     this.jwtFilter = jwtFilter;
   }
 
+  /**
+   * Security filter chain security filter chain.
+   *
+   * @param http the http
+   * @return the security filter chain
+   * @throws Exception the exception
+   */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -38,7 +54,7 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
-        .authorizeHttpRequests( authorize -> authorize
+        .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/students").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/teachers").permitAll()
@@ -50,12 +66,20 @@ public class SecurityConfig {
             .authenticationEntryPoint((request, response, authException) -> {
               response.setContentType("application/json");
               response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-              response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"" + authException.getMessage() + "\"}");
+              response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \""
+                  + authException.getMessage() + "\"}");
             }));
 
     return http.build();
   }
 
+  /**
+   * Authentication manager authentication manager.
+   *
+   * @param http the http
+   * @return the authentication manager
+   * @throws Exception the exception
+   */
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
     AuthenticationManagerBuilder authenticationManagerBuilder =
@@ -66,6 +90,11 @@ public class SecurityConfig {
     return authenticationManagerBuilder.build();
   }
 
+  /**
+   * Password encoder password encoder.
+   *
+   * @return the password encoder
+   */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();

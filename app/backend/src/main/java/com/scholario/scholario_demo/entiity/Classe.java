@@ -11,8 +11,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 
+/**
+ * The type Classe.
+ */
+@Setter
+@Getter
 @Entity
 @Table(name = "classes")
 public class Classe {
@@ -23,68 +30,36 @@ public class Classe {
   private String name;
   private int year;
 
+  /**
+   * The Teachers.
+   */
   @ManyToMany(mappedBy = "classesTeachers")
   List<Teacher> teachers = new ArrayList<>();
 
+  /**
+   * The Students.
+   */
   @ManyToMany(mappedBy = "classesStudents")
   List<Student> students = new ArrayList<>();
 
   @OneToMany(mappedBy = "classeAttendances", cascade = CascadeType.ALL)
   private List<Attendance> attendances = new ArrayList<>();
 
+  /**
+   * Instantiates a new Classe.
+   */
   public Classe() {
   }
 
+  /**
+   * Instantiates a new Classe.
+   *
+   * @param name the name
+   * @param year the year
+   */
   public Classe(String name, int year) {
     this.name = name;
     this.year = year;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public int getYear() {
-    return year;
-  }
-
-  public void setYear(int year) {
-    this.year = year;
-  }
-
-  public List<Teacher> getTeachers() {
-    return teachers;
-  }
-
-  public void setTeachers(List<Teacher> teachers) {
-    this.teachers = teachers;
-  }
-
-  public List<Student> getStudents() {
-    return students;
-  }
-
-  public void setStudents(List<Student> students) {
-    this.students = students;
-  }
-
-  public List<Attendance> getAttendances() {
-    return attendances;
-  }
-
-  public void setAttendances(List<Attendance> attendances) {
-    this.attendances = attendances;
-  }
 }

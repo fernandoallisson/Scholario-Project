@@ -1,7 +1,7 @@
 package com.scholario.scholario_demo.service;
 
 import com.scholario.scholario_demo.entiity.Administrator;
-import com.scholario.scholario_demo.exception.administrator.AdministratorNotfoundException;
+import com.scholario.scholario_demo.exception.administrator.AdministratorFoundException;
 import com.scholario.scholario_demo.repository.AdministratorRepository;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -28,9 +28,9 @@ public class AdministratorService {
     return administratorPage.toList();
   }
 
-  public Administrator getAdministratorById(Long id) throws AdministratorNotfoundException {
+  public Administrator getAdministratorById(Long id) throws AdministratorFoundException {
     return administratorRepository.findById(id)
-        .orElseThrow(() -> new AdministratorNotfoundException("Administrator not found."));
+        .orElseThrow(() -> new AdministratorFoundException("Administrator not found."));
   }
 
   public Administrator createAdministrator(Administrator administrator) {
@@ -41,7 +41,7 @@ public class AdministratorService {
   }
 
   public Administrator updateAdministrator(
-      Long id, Administrator administrator) throws AdministratorNotfoundException {
+      Long id, Administrator administrator) throws AdministratorFoundException {
     Administrator administratorFound = getAdministratorById(id);
 
     administratorFound.setName(administrator.getName());
@@ -62,8 +62,8 @@ public class AdministratorService {
 
   // Security
 
-  public UserDetails loadAdministratorByEmail(String email) throws AdministratorNotfoundException {
+  public UserDetails loadAdministratorByEmail(String email) throws AdministratorFoundException {
     return administratorRepository.findByEmail(email).orElseThrow(
-        () -> new AdministratorNotfoundException("Administrator not found."));
+        () -> new AdministratorFoundException("Administrator not found."));
   }
 }
