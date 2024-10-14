@@ -57,8 +57,12 @@ public class ClassService {
   // Associar uma disciplina a uma turma
 
   public Classe addSubjectToClass(Long classId, Long subjectId) throws ClassNotFoundException {
-    Classe classe = getClassById(subjectId);
+    Classe classe = getClassById(classId);
     Subject subject = subjectService.getSubjectById(subjectId);
+
+    if(classe.getSubjectClasses().contains(subject)) {
+      return classe;
+    }
 
     classe.getSubjectClasses().add(subject);
 
@@ -68,6 +72,7 @@ public class ClassService {
   public Classe removeSubjectFromClass(Long classId, Long subjectId) throws ClassNotFoundException {
     Classe classe = getClassById(subjectId);
     Subject subject = subjectService.getSubjectById(subjectId);
+
 
     classe.getSubjectClasses().remove(subject);
 

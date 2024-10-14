@@ -8,6 +8,7 @@ import com.scholario.scholario_demo.repository.AttendanceRepository;
 import com.scholario.scholario_demo.repository.ClassRepository;
 import com.scholario.scholario_demo.repository.StudentRepository;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,7 @@ public class AttendanceService {
 
   public Attendance createAttendance(Attendance attendance, Long studentId, Long classId) {
     Student student = studentService.getStudentById(studentId);
-
     Classe classe = classService.getClassById(classId);
-
-    if (student == null || classe == null) {
-      return null;
-    }
 
     attendance.setStudentAttendances(student);
     attendance.setClasseAttendances(classe);
@@ -51,7 +47,13 @@ public class AttendanceService {
 
     if (attendance.getDate() == null) {
       attendance.setDate(java.time.LocalDate.now().toString());
-      
+
+    }
+    Optional<Attendance> existingAttendance = attendanceRepository.findByStudentAttendancesAndClasseAttendancesAndDate(
+        student, classe, attendance.getDate());
+
+    if (existingAttendance.isPresent()) {
+      return existingAttendance.get();
     }
 
     return attendanceRepository.save(attendance);

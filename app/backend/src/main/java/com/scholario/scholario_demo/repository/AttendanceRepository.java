@@ -1,7 +1,12 @@
 package com.scholario.scholario_demo.repository;
 
 import com.scholario.scholario_demo.entiity.Attendance;
+import com.scholario.scholario_demo.entiity.Classe;
+import com.scholario.scholario_demo.entiity.Student;
+
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -47,5 +52,9 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
    */
   List<Attendance> findAllByStudentAttendancesIdAndClasseAttendancesIdAndDate(
       Long studentId, Long classId, String date);
+
+    // No AttendanceRepository
+    Optional<Attendance> findByStudentAttendancesAndClasseAttendancesAndDate(Student student, Classe classe, String date);
+
   
 }
