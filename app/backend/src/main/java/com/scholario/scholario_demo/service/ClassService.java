@@ -6,6 +6,7 @@ import com.scholario.scholario_demo.repository.ClassRepository;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,8 @@ public class ClassService {
   public Classe updateClass(Long id, Classe classe) throws ClassNotFoundException {
     Classe existingClass = classRepository.findById(id)
         .orElseThrow(() -> new ClassNotFoundException("Class not found."));
+
+        BeanUtils.copyProperties(classe, existingClass, "id");
 
     return classRepository.save(existingClass);
   }

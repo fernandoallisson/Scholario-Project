@@ -44,21 +44,36 @@ public class Teacher extends User {
   public Teacher() {
   }
 
+
   /**
    * Instantiates a new Teacher.
    *
-   * @param name       the name
-   * @param email      the email
-   * @param password   the password
-   * @param phone      the phone
-   * @param address    the address
-   * @param birthdate  the birthdate
-   * @param department the department
-   * @param hireDate   the hire date
+   * @param name              the name
+   * @param email             the email
+   * @param password          the password
+   * @param phone             the phone
+   * @param address           the address
+   * @param birthdate         the birthdate
+   * @param colorRace         the color race
+   * @param deficiency        the deficiency
+   * @param bloodType         the blood type
+   * @param nationality       the nationality
+   * @param specialConditions the special conditions
+   * @param allergiesList     the allergies list
+   * @param sex               the sex
+   * @param cpfNumber         the cpf number
+   * @param image             the image
+   * @param department        the department
+   * @param hireDate          the hire date
+   * @param subject           the subject
+   * @param classesTeachers   the classes teachers
    */
-  public Teacher(String name, String email, String password, String phone,
-      String address, String birthdate, String department, String hireDate) {
-    super(name, email, password, phone, address, birthdate);
+  public Teacher(String name, String email, String password, String phone, String address,
+      String birthdate, String colorRace, List<String> disabilities, String bloodType,
+      String nationality, List<String> specialConditions, List<String> allergiesList, String sex,
+      String cpfNumber, String image, String department, String hireDate) {
+    super(name, email, password, phone, address, birthdate, colorRace, disabilities, bloodType,
+        nationality, specialConditions, allergiesList, sex, cpfNumber, image);
     this.department = department;
     this.hireDate = hireDate;
   }

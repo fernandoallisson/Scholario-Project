@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * The type User.
+ * 
  */
 @Setter
 @Getter
@@ -27,19 +29,33 @@ import org.springframework.security.core.userdetails.UserDetails;
 @DiscriminatorColumn(name = "user_type")
 @Table(name = "users")
 public class User implements UserDetails {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
-  private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+  @SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", initialValue = 1234567, allocationSize = 1)
+  private Long id;
 
   @Column(unique = true)
   private String email;
 
+  @Column(unique = true)
+  private String cpfNumber;
+
+  private String name;
   private String password;
   private String phone;
   private String address;
   private String birthdate;
+  private String colorRace;
+  private List<String> disabilities;
+  private String bloodType;
+  private String nationality;
+  private List<String> specialConditions;
+  private List<String> allergiesList;
+  private String sex;
+
+
+  private String image;
 
   @Column(name = "user_type", insertable = false, updatable = false)
   private String userType;
@@ -60,14 +76,25 @@ public class User implements UserDetails {
    * @param address   the address
    * @param birthdate the birthdate
    */
-  public User(String name, String email, String password, String phone,
-      String address, String birthdate) {
+  public User(String name, String email, String password, String phone, String address,
+      String birthdate, String colorRace, List<String> disabilities, String bloodType,
+      String nationality, List<String> specialConditions, List<String> allergiesList, String sex,
+      String cpfNumber, String image) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.phone = phone;
     this.address = address;
     this.birthdate = birthdate;
+    this.colorRace = colorRace;
+    this.disabilities = disabilities;
+    this.bloodType = bloodType;
+    this.nationality = nationality;
+    this.specialConditions = specialConditions;
+    this.allergiesList = allergiesList;
+    this.sex = sex;
+    this.cpfNumber = cpfNumber;
+    this.image = image;
   }
 
   // For Security

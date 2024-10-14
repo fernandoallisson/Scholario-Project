@@ -12,9 +12,25 @@ import java.util.stream.Collectors;
  * The type Teacher dto.
  */
 public record TeacherDto(
-    Long id, String name, String email, String phone, String address,
-    String birthdate, String department, String hireDate,
-    List<SubjectDto> subjects, List<ClassDto> classes) {
+    Long id,
+    String name,
+    String email,
+    String phone,
+    String cpfNumber,
+    String address,
+    String birthdate,
+    String nationality,
+    String colorRace,
+    String bloodType,
+    String department,
+    String hireDate,
+    String sex,
+    List<String> specialConditions,
+    List<String> allergiesList,
+    List<String> disabilities,
+    List<SubjectDto> subjects,
+    List<ClassDto> classes
+) {
 
   /**
    * From entity teacher dto.
@@ -48,12 +64,21 @@ public record TeacherDto(
         teacher.getName(),
         teacher.getEmail(),
         teacher.getPhone(),
+        teacher.getCpfNumber(),
         teacher.getAddress(),
         teacher.getBirthdate(),
+        teacher.getNationality(),
+        teacher.getColorRace(),
+        teacher.getBloodType(),
         teacher.getDepartment(),
         teacher.getHireDate(),
+        teacher.getSex(),
+        teacher.getSpecialConditions(),
+        teacher.getAllergiesList(),
+        teacher.getDisabilities(),
         subjectDtos,
-        classDtos);
+        classDtos
+    );
   }
 
 }

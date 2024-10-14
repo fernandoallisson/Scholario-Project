@@ -8,6 +8,8 @@ import com.scholario.scholario_demo.repository.AttendanceRepository;
 import com.scholario.scholario_demo.repository.ClassRepository;
 import com.scholario.scholario_demo.repository.StudentRepository;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,8 +84,7 @@ public class AttendanceService {
     Attendance existingAttendance = attendanceRepository.findById(id).orElseThrow(
         () -> new AttendanceNotFoundException("Attendance not found."));
 
-    existingAttendance.setStatus(attendance.getStatus());
-    existingAttendance.setDate(attendance.getDate());
+    BeanUtils.copyProperties(attendance, existingAttendance, "id");
 
     return attendanceRepository.save(existingAttendance);
   }

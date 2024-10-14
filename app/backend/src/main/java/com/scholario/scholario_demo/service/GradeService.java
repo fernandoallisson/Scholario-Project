@@ -6,6 +6,8 @@ import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.exception.grade.GradeNotFoundException;
 
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,8 +75,7 @@ public class GradeService {
       return null;
     }
 
-    gradeFound.setGradeValue(grade.getGradeValue());
-    gradeFound.setDate(grade.getDate());
+      BeanUtils.copyProperties(grade, gradeFound, "id");
 
     return gradeRepository.save(gradeFound);
   }

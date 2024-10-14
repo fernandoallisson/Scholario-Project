@@ -8,6 +8,8 @@ import com.scholario.scholario_demo.exception.subject.SubjectNotFoundException;
 import com.scholario.scholario_demo.exception.teacher.TeacherNotFoundException;
 import com.scholario.scholario_demo.repository.TeacherRepository;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,15 +56,7 @@ public class TeacherService {
   public Teacher updateTeacher(Long id, Teacher teacher) {
     Teacher teacherFound = getTeacherById(id);
 
-    teacherFound.setName(teacher.getName());
-    teacherFound.setEmail(teacher.getEmail());
-    teacherFound.setDepartment(teacher.getDepartment());
-    teacherFound.setAddress(teacher.getAddress());
-    teacherFound.setBirthdate(teacher.getBirthdate());
-    teacherFound.setPassword(teacher.getPassword());
-    teacherFound.setPhone(teacher.getPhone());
-    teacherFound.setSubject(teacher.getSubject());
-    teacherFound.setHireDate(teacher.getHireDate());
+    BeanUtils.copyProperties(teacher, teacherFound, "id");
 
     return teacherRepository.save(teacherFound);
   }

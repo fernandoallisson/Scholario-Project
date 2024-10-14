@@ -7,9 +7,22 @@ import java.util.List;
 /**
  * The type Student dto.
  */
-public record StudentDto(Long id, String name, String email, String phone, String address,
-    String birthdate, Long enrollment, String guardianName,
-    String guardianCellPhone, List<ClassDto> classes) {
+public record StudentDto(
+    Long id,
+    String name,
+    String email,
+    String phone,
+    String address,
+    String birthdate,
+    String colorRace,
+    String bloodType,
+    String nationality,
+    String cpfNumber,
+    String image,
+    List<String> specialConditions,
+    List<String> allergiesList,
+    List<ClassDto> classes
+) {
 
   /**
    * From entity student dto.
@@ -25,12 +38,15 @@ public record StudentDto(Long id, String name, String email, String phone, Strin
         student.getPhone(),
         student.getAddress(),
         student.getBirthdate(),
-        student.getEnrollment(),
-        student.getGuardianName(),
-        student.getGuardianCellPhone(),
-        student.getClassesStudents().stream()
-            .map(ClassDto::fromEntity)
-            .toList()
+        student.getColorRace(),
+        student.getBloodType(),
+        student.getNationality(),
+        student.getCpfNumber(),
+        student.getImage(),
+        student.getSpecialConditions(),
+        student.getAllergiesList(),
+        student.getClassesStudents().stream().map(ClassDto::fromEntity).toList()
+
     );
   }
 }

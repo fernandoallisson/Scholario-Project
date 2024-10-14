@@ -5,6 +5,7 @@ import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.exception.subject.SubjectNotFoundException;
 import com.scholario.scholario_demo.repository.SubjectRepository;
 import java.util.List;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,9 +43,7 @@ public class SubjectService {
   public Subject updateSubject(Long id, Subject subject) {
     Subject subjectFound = getSubjectById(id);
 
-    subjectFound.setName(subject.getName());
-    subjectFound.setDescription(subject.getDescription());
-    subjectFound.setTeachers(subject.getTeachers());
+    BeanUtils.copyProperties(subject, subjectFound, "id");
 
     return subjectRepository.save(subjectFound);
   }

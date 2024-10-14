@@ -4,6 +4,8 @@ import com.scholario.scholario_demo.entiity.Administrator;
 import com.scholario.scholario_demo.exception.administrator.AdministratorFoundException;
 import com.scholario.scholario_demo.repository.AdministratorRepository;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,14 +46,7 @@ public class AdministratorService {
       Long id, Administrator administrator) throws AdministratorFoundException {
     Administrator administratorFound = getAdministratorById(id);
 
-    administratorFound.setName(administrator.getName());
-    administratorFound.setDepartment(administrator.getDepartment());
-    administratorFound.setAddress(administrator.getAddress());
-    administratorFound.setEmail(administrator.getEmail());
-    administratorFound.setBirthdate(administrator.getBirthdate());
-    administratorFound.setPassword(administrator.getPassword());
-    administratorFound.setPhone(administrator.getPhone());
-    administratorFound.setHireDate(administrator.getHireDate());
+    BeanUtils.copyProperties(administrator, administratorFound, "id");
 
     return administratorRepository.save(administratorFound);
   }

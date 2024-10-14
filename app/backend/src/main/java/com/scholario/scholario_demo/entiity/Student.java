@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,6 @@ import lombok.Setter;
 @DiscriminatorValue("student")
 public class Student extends User {
 
-  private Long enrollment;
-  private String guardianName;
-  private String guardianCellPhone;
-
   @ManyToMany
   @JoinTable(
       name = "students_classes",
@@ -40,12 +37,16 @@ public class Student extends User {
   @OneToMany(mappedBy = "studentGrades", cascade = CascadeType.ALL)
   private List<Grade> grades = new ArrayList<>();
 
+  @ManyToOne
+  @JoinColumn(name = "parent_id")
+  private Parent parent;
+
   /**
    * Instantiates a new Student.
    */
   public Student() {}
 
-  /**
+    /**
    * Instantiates a new Student.
    *
    * @param name              the name
@@ -54,17 +55,26 @@ public class Student extends User {
    * @param phone             the phone
    * @param address           the address
    * @param birthdate         the birthdate
-   * @param enrollment        the enrollment
-   * @param guardianName      the guardian name
-   * @param guardianCellPhone the guardian cell phone
+   * @param colorRace         the color race
+   * @param deficiency        the deficiency
+   * @param bloodType         the blood type
+   * @param nationality       the nationality
+   * @param specialConditions the special conditions
+   * @param allergiesList     the allergies list
+   * @param sex               the sex
+   * @param cpfNumber         the cpf number
+   * @param image             the image
+   * @param classesStudents   the classes students
+   * @param attendances       the attendances
+   * @param grades            the grades
+   * @param parent            the parent
    */
-  public Student(String name, String email, String password, String phone,
-      String address, String birthdate, Long enrollment, String guardianName,
-      String guardianCellPhone) {
-    super(name, email, password, phone, address, birthdate);
-    this.enrollment = enrollment;
-    this.guardianName = guardianName;
-    this.guardianCellPhone = guardianCellPhone;
+  public Student(String name, String email, String password, String phone, String address,
+      String birthdate, String colorRace, List<String> disabilities, String bloodType,
+      String nationality, List<String> specialConditions, List<String> allergiesList, String sex,
+      String cpfNumber, String image) {
+    super(name, email, password, phone, address, birthdate, colorRace, disabilities, bloodType,
+        nationality, specialConditions, allergiesList, sex, cpfNumber, image);
   }
 
 }

@@ -5,6 +5,8 @@ import com.scholario.scholario_demo.entiity.Student;
 import com.scholario.scholario_demo.exception.student.StudentNotFoundException;
 import com.scholario.scholario_demo.repository.StudentRepository;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,15 +54,7 @@ public class StudentService {
   public Student updateStudent(Long id, Student student) {
     Student studentFound = getStudentById(id);
 
-    studentFound.setName(student.getName());
-    studentFound.setEmail(student.getEmail());
-    studentFound.setPassword(student.getPassword());
-    studentFound.setPhone(student.getPhone());
-    studentFound.setAddress(student.getAddress());
-    studentFound.setBirthdate(student.getBirthdate());
-    studentFound.setEnrollment(student.getEnrollment());
-    studentFound.setGuardianName(student.getGuardianName());
-    studentFound.setGuardianCellPhone(student.getGuardianCellPhone());
+    BeanUtils.copyProperties(student, studentFound, "id");
 
     return studentRepository.save(studentFound);
   }
