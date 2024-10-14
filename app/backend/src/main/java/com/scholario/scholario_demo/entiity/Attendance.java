@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,8 @@ import lombok.Setter;
 public class Attendance {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attendance_seq")
+  @SequenceGenerator(name = "attendance_seq", sequenceName = "attendance_sequence", initialValue = 5234568, allocationSize = 1)
   private Long id;
 
   private String date;

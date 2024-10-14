@@ -128,4 +128,48 @@ public class ClassController {
     classService.deleteClass(id);
     return ResponseEntity.ok("Turma de ID: " + id + " foi removido da base de dados");
   }
+
+  // Associar uma disciplina a uma turma
+
+  /**
+   * Add subject to class response entity.
+   *
+   * @param classId   the class id
+   * @param subjectId the subject id
+   * @return the response entity
+   */
+
+  @PutMapping("/{classId}/subjects/{subjectId}")
+  @PreAuthorize("hasAuthority('admin')")
+  public ResponseEntity<?> addSubjectToClass(@PathVariable Long classId, @PathVariable Long subjectId) {
+    try {
+      ClassDto classe = ClassDto.fromEntity(
+          classService.addSubjectToClass(classId, subjectId));
+      return ResponseEntity.ok(classe);
+    } catch (ClassNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("Class with id " +  classId + " not found");
+    }
+  }
+
+  /**
+   * Remove subject from class response entity.
+   *
+   * @param classId   the class id
+   * @param subjectId the subject id
+   * @return the response entity
+   */
+
+  @DeleteMapping("/{classId}/subjects/{subjectId}")
+  @PreAuthorize("hasAuthority('admin')")
+  public ResponseEntity<?> removeSubjectFromClass(@PathVariable Long classId, @PathVariable Long subjectId) {
+    try {
+      ClassDto classe = ClassDto.fromEntity(
+          classService.removeSubjectFromClass(classId, subjectId));
+      return ResponseEntity.ok(classe);
+    } catch (ClassNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("Class with id " +  classId + " not found");
+    }
+  }
 }

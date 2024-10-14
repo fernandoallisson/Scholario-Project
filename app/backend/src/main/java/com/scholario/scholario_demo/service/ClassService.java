@@ -1,6 +1,7 @@
 package com.scholario.scholario_demo.service;
 
 import com.scholario.scholario_demo.entiity.Classe;
+import com.scholario.scholario_demo.entiity.Subject;
 import com.scholario.scholario_demo.exception.classes.ClassNotFoundException;
 import com.scholario.scholario_demo.repository.ClassRepository;
 
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Service;
 public class ClassService {
 
   private final ClassRepository classRepository;
+  private final SubjectService subjectService;
 
-  public ClassService(ClassRepository classRepository) {
+  public ClassService(ClassRepository classRepository, SubjectService subjectService) {
     this.classRepository = classRepository;
+    this.subjectService = subjectService;
   }
 
   public List<Classe> getAllClasses(int pageNumber, int pageSize) {
@@ -51,4 +54,23 @@ public class ClassService {
     classRepository.deleteById(id);
   }
 
+  // Associar uma disciplina a uma turma
+
+  public Classe addSubjectToClass(Long classId, Long subjectId) throws ClassNotFoundException {
+    Classe classe = getClassById(subjectId);
+    Subject subject = subjectService.getSubjectById(subjectId);
+
+    classe.getSubjectClasses().add(subject);
+
+    return classRepository.save(classe);
+  }
+
+  public Classe removeSubjectFromClass(Long classId, Long subjectId) throws ClassNotFoundException {
+    Classe classe = getClassById(subjectId);
+    Subject subject = subjectService.getSubjectById(subjectId);
+
+    classe.getSubjectClasses().remove(subject);
+
+    return classRepository.save(classe);
+  }
 }

@@ -5,7 +5,7 @@ import com.scholario.scholario_demo.entiity.Classe;
 /**
  * The type Class creation dto.
  */
-public record ClassCreationDto(String name, int year) {
+public record ClassCreationDto(String name, String shift, int year) {
 
   /**
    * To entity classe.
@@ -14,7 +14,7 @@ public record ClassCreationDto(String name, int year) {
    */
   public Classe toEntity() {
     return new Classe(
-        name, year
+        name, shift, year
     );
   }
 }

@@ -1,12 +1,14 @@
 package com.scholario.scholario_demo.dto.classes;
 
+import com.scholario.scholario_demo.dto.subject.SubjectDto;
 import com.scholario.scholario_demo.entiity.Classe;
+import java.util.List;
 
 
 /**
  * The type Class dto.
  */
-public record ClassDto(Long id, String name, int year) {
+public record ClassDto(Long id, String name, String shift, int year, List<SubjectDto> subjects) {
 
   /**
    * From entity class dto.
@@ -22,7 +24,12 @@ public record ClassDto(Long id, String name, int year) {
     return new ClassDto(
         classes.getId(),
         classes.getName(),
-        classes.getYear()
+        classes.getShift(),
+        classes.getYear(),
+        classes.getSubjectClasses()
+            .stream()
+            .map(SubjectDto::fromEntity)
+            .toList()
     );
   }
 }

@@ -30,11 +30,15 @@ public class Subject {
   private String name;
   private String description;
 
-  @ManyToMany(mappedBy = "subject")
+  @ManyToMany(mappedBy = "subject", cascade = CascadeType.ALL)
   private List<Teacher> teachers = new ArrayList<>();
 
   @OneToMany(mappedBy = "subjectGrades", cascade = CascadeType.ALL)
   private List<Grade> grades = new ArrayList<>();
+
+  @ManyToMany(mappedBy = "subjectClasses", cascade = CascadeType.ALL)
+  private List<Classe> classes = new ArrayList<>();
+
 
   /**
    * Instantiates a new Subject.

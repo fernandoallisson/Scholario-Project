@@ -7,6 +7,7 @@ import com.scholario.scholario_demo.validation.userValidation.services.UserValid
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ public class AdministratorService {
   private final AdministratorRepository administratorRepository;
   private final UserValidationDataService userValidationDataService;
 
+  @Autowired
   public AdministratorService(AdministratorRepository administratorRepository,
       UserValidationDataService userValidationDataService) {
     this.administratorRepository = administratorRepository;

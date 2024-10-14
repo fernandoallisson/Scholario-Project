@@ -157,6 +157,9 @@ Endpoint Disponíveis
 | POST        | `/classes`                                     | Cria uma nova turma                                    |
 | PUT         | `/classes/{id}`                                | Atualiza uma turma                                     |
 | DELETE      | `/classes/{id}`                                | Deleta uma turma específica                            |
+| PUT         | `/classes/{classId}/subjects{subjectId}`       | Associar uma disciplina a uma turma                    |
+| DELETE      | `/classes/{classId}/subjects{subjectId}`       | Dessasociar uma disciplina de uma turma                |
+
 
 </details>
 
@@ -257,6 +260,9 @@ Este projeto utiliza autenticação e autorização para garantir a segurança d
 - `POST /classes`: Apenas usuários com a autoridade "admin" podem criar uma nova turma.
 - `PUT /classes/{id}`: Apenas usuários com a autoridade "admin" podem atualizar uma turma existente.
 - `DELETE /classes/{id}`: Apenas usuários com a autoridade "admin" podem excluir uma turma do sistema.
+- `PUT /classes/{classId}/subjects{subjectId}`: Apenas usuários com autoridade "admin" podem fazer a associação de uma matéria para uma turma;
+- `DELETE /classes/{classId}/subjects{subjectId}`: Apenas usuários com autoridade "admin" podem fazer a desassociação de uma matéria em uma turma;
+
 </details>
 
 <details>

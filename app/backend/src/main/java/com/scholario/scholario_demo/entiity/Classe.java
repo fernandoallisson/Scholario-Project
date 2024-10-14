@@ -6,8 +6,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +27,22 @@ import lombok.Setter;
 @Table(name = "classes")
 public class Classe {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_seq")
+  @SequenceGenerator(name = "class_seq", sequenceName = "class_sequence", initialValue = 3234567, allocationSize = 1)
   private Long id;
 
   private String name;
+  private String shift;
   private int year;
+  private boolean isActive;
+
+  @ManyToMany
+  @JoinTable(
+      name = "classes_subjects",
+      joinColumns = @JoinColumn(name = "classe_id"),
+      inverseJoinColumns = @JoinColumn(name = "subject_id")
+  )
+  private List<Subject> subjectClasses = new ArrayList<>();
 
   /**
    * The Teachers.
@@ -56,10 +70,12 @@ public class Classe {
    *
    * @param name the name
    * @param year the year
+   * @param shift the shift
    */
-  public Classe(String name, int year) {
+  public Classe(String name, String shift, int year) {
     this.name = name;
     this.year = year;
+    this.shift = shift;
   }
 
 }
