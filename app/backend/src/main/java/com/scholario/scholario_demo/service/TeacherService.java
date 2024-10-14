@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,11 +44,15 @@ public class TeacherService {
   }
 
   public Teacher createTeacher(Teacher teacher) {
+    String hashedPassword = new BCryptPasswordEncoder()
+        .encode(teacher.getPassword());
+
+    teacher.setPassword(hashedPassword);
     return teacherRepository.save(teacher);
   }
 
   public Teacher updateTeacher(Long id, Teacher teacher) {
-    Teacher teacherFound = new Teacher();
+    Teacher teacherFound = getTeacherById(id);
 
     teacherFound.setName(teacher.getName());
     teacherFound.setEmail(teacher.getEmail());
@@ -120,4 +127,10 @@ public class TeacherService {
     return teacherRepository.findByNameContaining(name);
   }
 
+  //  Security
+  public UserDetails loadTeacherByEmail(String email) throws UsernameNotFoundException {
+    return teacherRepository.findByEmail(email).orElseThrow(
+        () -> new UsernameNotFoundException(email)
+    );
+  }
 }

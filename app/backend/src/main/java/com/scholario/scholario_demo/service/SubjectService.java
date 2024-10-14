@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SubjectService {
+
   private final SubjectRepository subjectRepository;
 
   @Autowired
@@ -31,7 +32,7 @@ public class SubjectService {
 
   public Subject getSubjectById(Long id) throws SubjectNotFoundException {
     return subjectRepository.findById(id).orElseThrow(
-      () -> new SubjectNotFoundException("Subject not found."));
+        () -> new SubjectNotFoundException("Subject not found."));
   }
 
   public Subject createSubject(Subject subject) {
@@ -51,4 +52,5 @@ public class SubjectService {
   public void deleteSubject(Long id) {
     subjectRepository.deleteById(id);
   }
+
 }

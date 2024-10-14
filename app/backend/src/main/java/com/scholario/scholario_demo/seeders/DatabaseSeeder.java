@@ -13,15 +13,29 @@ import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Database seeder.
+ */
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
 
   private final TeacherRepository teacherRepository;
   private final StudentRepository studentRepository;
   private final SubjectRepository subjectRepository;
+  /**
+   * The Administrator repository.
+   */
   protected final AdministratorRepository administratorRepository;
 
 
+  /**
+   * Instantiates a new Database seeder.
+   *
+   * @param teacherRepository       the teacher repository
+   * @param studentRepository       the student repository
+   * @param subjectRepository       the subject repository
+   * @param administratorRepository the administrator repository
+   */
   public DatabaseSeeder(TeacherRepository teacherRepository, StudentRepository studentRepository,
       SubjectRepository subjectRepository, AdministratorRepository administratorRepository) {
     this.teacherRepository = teacherRepository;
@@ -40,15 +54,6 @@ public class DatabaseSeeder implements CommandLineRunner {
 
   private void seedTeachers() {
     List<Teacher> teachers = new ArrayList<>();
-//    public Teacher(String name,
-//        String email,
-//        String password,
-//        String role,
-//        String phone,
-//        String address,
-//        String birthdate,
-//        String department,
-//        String hireDate )
     teachers.add(new Teacher(
         "Fernando Álisson",
         "@fernando.alisson@email.com",
@@ -82,7 +87,7 @@ public class DatabaseSeeder implements CommandLineRunner {
   private void seedSubjects() {
     List<Subject> subjects = new ArrayList<>();
 
-    subjects.add(new Subject("Língua Inglesa","Linguagens códigos e suas tecnologias"));
+    subjects.add(new Subject("Língua Inglesa", "Linguagens códigos e suas tecnologias"));
     subjects.add(new Subject("Língua Espanhola", "Linguagens códigos e suas tecnologias"));
     subjects.add(new Subject("Língua Portuguesa", "Linguagens códigos e suas tecnologias"));
     subjects.add(new Subject("Matemática", "Exatas"));
@@ -94,7 +99,7 @@ public class DatabaseSeeder implements CommandLineRunner {
   private void seedAdministrators() {
     List<Administrator> administratorList = new ArrayList<>();
 
-    administratorList.add( new Administrator(
+    administratorList.add(new Administrator(
           "Álisson dos Santos",
         "alisson@email.com",
         "abissínio123",

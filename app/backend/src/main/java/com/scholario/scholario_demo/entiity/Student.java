@@ -7,11 +7,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 
+/**
+ * The type Student.
+ */
+@Setter
+@Getter
 @Entity
 @DiscriminatorValue("student")
 public class Student extends User {
@@ -34,8 +40,24 @@ public class Student extends User {
   @OneToMany(mappedBy = "studentGrades", cascade = CascadeType.ALL)
   private List<Grade> grades = new ArrayList<>();
 
-  public Student(){}
+  /**
+   * Instantiates a new Student.
+   */
+  public Student() {}
 
+  /**
+   * Instantiates a new Student.
+   *
+   * @param name              the name
+   * @param email             the email
+   * @param password          the password
+   * @param phone             the phone
+   * @param address           the address
+   * @param birthdate         the birthdate
+   * @param enrollment        the enrollment
+   * @param guardianName      the guardian name
+   * @param guardianCellPhone the guardian cell phone
+   */
   public Student(String name, String email, String password, String phone,
       String address, String birthdate, Long enrollment, String guardianName,
       String guardianCellPhone) {
@@ -45,51 +67,4 @@ public class Student extends User {
     this.guardianCellPhone = guardianCellPhone;
   }
 
-   public Long getEnrollment() {
-    return enrollment;
-  }
-
-  public void setEnrollment(Long enrollment) {
-    this.enrollment = enrollment;
-  }
-
-  public String getGuardianName() {
-    return guardianName;
-  }
-
-  public void setGuardianName(String guardianName) {
-    this.guardianName = guardianName;
-  }
-
-  public String getGuardianCellPhone() {
-    return guardianCellPhone;
-  }
-
-  public void setGuardianCellPhone(String guardianCellPhone) {
-    this.guardianCellPhone = guardianCellPhone;
-  }
-
-  public List<Attendance> getAttendances() {
-    return attendances;
-  }
-
-  public void setAttendances(List<Attendance> attendances) {
-    this.attendances = attendances;
-  }
-
-  public List<Classe> getClassesStudents() {
-    return classesStudents;
-  }
-
-  public void setClassesStudents(List<Classe> classesStudents) {
-    this.classesStudents = classesStudents;
-  }
-
-  public List<Grade> getGrades() {
-    return grades;
-  }
-
-  public void setGrades(List<Grade> grades) {
-    this.grades = grades;
-  }
 }
