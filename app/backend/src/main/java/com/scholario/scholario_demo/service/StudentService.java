@@ -4,6 +4,8 @@ import com.scholario.scholario_demo.entiity.Classe;
 import com.scholario.scholario_demo.entiity.Student;
 import com.scholario.scholario_demo.exception.student.StudentNotFoundException;
 import com.scholario.scholario_demo.repository.StudentRepository;
+import com.scholario.scholario_demo.validation.userValidation.services.UserValidationDataService;
+
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -20,11 +22,14 @@ import org.springframework.stereotype.Service;
 public class StudentService {
   private final StudentRepository studentRepository;
   private final ClassService classService;
+  private final UserValidationDataService userValidationDataService;
 
   @Autowired
-  public StudentService(StudentRepository studentRepository, ClassService classService) {
+  public StudentService(StudentRepository studentRepository, ClassService classService,
+  UserValidationDataService studentValidationDataService) {
     this.studentRepository = studentRepository;
     this.classService = classService;
+    this.userValidationDataService = studentValidationDataService;
   }
 
   public List<Student> getAllStudents(int pageNumber, int pageSize) {
@@ -41,18 +46,20 @@ public class StudentService {
 
   public Student createStudent(Student student) {
 
+    userValidationDataService.validateStudent(student);
+
     String hashedPassword = new BCryptPasswordEncoder()
         .encode(student.getPassword());
 
     student.setPassword(hashedPassword);
-
-    // Chamar método para verificação antes de salvar
 
     return studentRepository.save(student);
   }
 
   public Student updateStudent(Long id, Student student) {
     Student studentFound = getStudentById(id);
+
+    userValidationDataService.validateStudent(student);
 
     BeanUtils.copyProperties(student, studentFound, "id");
 

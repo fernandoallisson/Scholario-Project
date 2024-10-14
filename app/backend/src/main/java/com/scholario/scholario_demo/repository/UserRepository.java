@@ -18,4 +18,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @return the optional
    */
   Optional<User> findByEmail(String email);
+
+  /**
+   * Find by cpf number optional.
+   *
+   * @param cpfNumber the cpf number
+   * @return the optional
+   */
+  Optional<User> findByCpfNumber(String cpfNumber);
 }

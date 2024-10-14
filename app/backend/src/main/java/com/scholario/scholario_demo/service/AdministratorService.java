@@ -3,6 +3,7 @@ package com.scholario.scholario_demo.service;
 import com.scholario.scholario_demo.entiity.Administrator;
 import com.scholario.scholario_demo.exception.administrator.AdministratorFoundException;
 import com.scholario.scholario_demo.repository.AdministratorRepository;
+import com.scholario.scholario_demo.validation.userValidation.services.UserValidationDataService;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -17,9 +18,12 @@ import org.springframework.stereotype.Service;
 public class AdministratorService {
 
   private final AdministratorRepository administratorRepository;
+  private final UserValidationDataService userValidationDataService;
 
-  public AdministratorService(AdministratorRepository administratorRepository) {
+  public AdministratorService(AdministratorRepository administratorRepository,
+      UserValidationDataService userValidationDataService) {
     this.administratorRepository = administratorRepository;
+    this.userValidationDataService = userValidationDataService;
   }
 
   public List<Administrator> getAllAdministrators(int pageNumber, int pageSize) {
@@ -36,6 +40,9 @@ public class AdministratorService {
   }
 
   public Administrator createAdministrator(Administrator administrator) {
+
+    userValidationDataService.validateAdmin(administrator);
+
     String hashedPassword = new BCryptPasswordEncoder().encode(administrator.getPassword());
 
     administrator.setPassword(hashedPassword);
@@ -45,6 +52,8 @@ public class AdministratorService {
   public Administrator updateAdministrator(
       Long id, Administrator administrator) throws AdministratorFoundException {
     Administrator administratorFound = getAdministratorById(id);
+
+    userValidationDataService.validateAdmin(administrator);
 
     BeanUtils.copyProperties(administrator, administratorFound, "id");
 
@@ -56,7 +65,6 @@ public class AdministratorService {
   }
 
   // Security
-
   public UserDetails loadAdministratorByEmail(String email) throws AdministratorFoundException {
     return administratorRepository.findByEmail(email).orElseThrow(
         () -> new AdministratorFoundException("Administrator not found."));

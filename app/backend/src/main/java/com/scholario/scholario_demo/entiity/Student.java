@@ -56,7 +56,6 @@ public class Student extends User {
    * @param address           the address
    * @param birthdate         the birthdate
    * @param colorRace         the color race
-   * @param deficiency        the deficiency
    * @param bloodType         the blood type
    * @param nationality       the nationality
    * @param specialConditions the special conditions
@@ -64,10 +63,6 @@ public class Student extends User {
    * @param sex               the sex
    * @param cpfNumber         the cpf number
    * @param image             the image
-   * @param classesStudents   the classes students
-   * @param attendances       the attendances
-   * @param grades            the grades
-   * @param parent            the parent
    */
   public Student(String name, String email, String password, String phone, String address,
       String birthdate, String colorRace, List<String> disabilities, String bloodType,

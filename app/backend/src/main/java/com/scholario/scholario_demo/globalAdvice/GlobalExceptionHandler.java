@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.scholario.scholario_demo.validation.userValidation.exception.DataIntegrityException;
+
 /**
  * The type Global exception handler.
  */
@@ -31,6 +33,12 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(RuntimeException.class)
   public ResponseEntity<String> handleYourSpecificException(RuntimeException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(ex.getMessage());
+  }
+
+  @ExceptionHandler(DataIntegrityException.class)
+  public ResponseEntity<String> handleDataIntegrityException(DataIntegrityException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(ex.getMessage());
   }

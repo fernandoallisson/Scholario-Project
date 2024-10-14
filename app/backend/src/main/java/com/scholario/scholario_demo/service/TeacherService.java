@@ -7,6 +7,7 @@ import com.scholario.scholario_demo.exception.classes.ClassNotFoundException;
 import com.scholario.scholario_demo.exception.subject.SubjectNotFoundException;
 import com.scholario.scholario_demo.exception.teacher.TeacherNotFoundException;
 import com.scholario.scholario_demo.repository.TeacherRepository;
+import com.scholario.scholario_demo.validation.userValidation.services.UserValidationDataService;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -24,13 +25,15 @@ public class TeacherService {
   private final TeacherRepository teacherRepository;
   private final SubjectService subjectService;
   private final ClassService classService;
+  private final UserValidationDataService userValidationDataService;
 
   @Autowired
   public TeacherService (TeacherRepository teacherRepository, SubjectService subjectService,
-      ClassService classService) {
+      ClassService classService, UserValidationDataService userValidationDataService) {
     this.teacherRepository = teacherRepository;
     this.subjectService = subjectService;
     this.classService = classService;
+    this.userValidationDataService = userValidationDataService;
   }
 
   public List<Teacher> getAllTeachers(int pageNumber, int pageSize) {
@@ -46,6 +49,9 @@ public class TeacherService {
   }
 
   public Teacher createTeacher(Teacher teacher) {
+
+    userValidationDataService.validateTeacher(teacher);
+
     String hashedPassword = new BCryptPasswordEncoder()
         .encode(teacher.getPassword());
 
@@ -55,6 +61,8 @@ public class TeacherService {
 
   public Teacher updateTeacher(Long id, Teacher teacher) {
     Teacher teacherFound = getTeacherById(id);
+
+    userValidationDataService.validateTeacher(teacher);
 
     BeanUtils.copyProperties(teacher, teacherFound, "id");
 
