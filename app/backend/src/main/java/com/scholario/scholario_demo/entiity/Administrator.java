@@ -34,7 +34,7 @@ public class Administrator extends User {
    * @param address           the address
    * @param birthdate         the birthdate
    * @param colorRace         the color race
-   * @param deficiency        the deficiency
+   * @param disabilities      the disabilities
    * @param bloodType         the blood type
    * @param nationality       the nationality
    * @param specialConditions the special conditions
