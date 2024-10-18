@@ -25,16 +25,21 @@ public class Grade {
   @SequenceGenerator(name = "grade_seq", sequenceName = "grade_sequence", initialValue = 4234568, allocationSize = 1)
   private Long id;
 
-  private double gradeValue;
   private String date;
 
   @ManyToOne
-  @JoinColumn(name = "student_id")
+  @JoinColumn(name = "student_id", nullable = false)
   private Student studentGrades;
 
   @ManyToOne
-  @JoinColumn(name = "subject_id")
+  @JoinColumn(name = "subject_id", nullable = false)
   private Subject subjectGrades;
+
+  private double firstGrade = 0.0;
+  private double secondGrade = 0.0;
+  private double thirdGrade = 0.0;
+  private double fourthGrade = 0.0;
+  private int year;
 
   /**
    * Instantiates a new Grade.
@@ -45,12 +50,21 @@ public class Grade {
   /**
    * Instantiates a new Grade.
    *
-   * @param gradeValue the grade value
    * @param date       the date
+   * @param firstGrade the first grade
+   * @param secondGrade the second grade
+   * @param thirdGrade the third grade
+   * @param year the year
+   * 
    */
-  public Grade(double gradeValue, String date) {
-    this.gradeValue = gradeValue;
+  public Grade( String date, double firstGrade, 
+  double secondGrade, double thirdGrade, double fourthGrade, int year) {
     this.date = date;
+    this.firstGrade = firstGrade;
+    this.secondGrade = secondGrade;
+    this.thirdGrade = thirdGrade;
+    this.fourthGrade = fourthGrade;
+    this.year = year;
   }
 
 }

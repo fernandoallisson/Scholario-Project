@@ -64,7 +64,7 @@ public class TeacherService {
 
     userValidationDataService.validateTeacher(teacher);
 
-    BeanUtils.copyProperties(teacher, teacherFound, "id");
+    BeanUtils.copyProperties(teacher, teacherFound, "id", "email", "cpfNumber");
 
     return teacherRepository.save(teacherFound);
   }

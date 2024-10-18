@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ import lombok.Setter;
 public class Subject {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_seq")
+  @SequenceGenerator(name = "subject_seq", sequenceName = "subject_sequence", initialValue = 4234568, allocationSize = 1)
   private Long id;
 
   private String name;

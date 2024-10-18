@@ -61,7 +61,7 @@ public class StudentService {
 
     userValidationDataService.validateStudent(student);
 
-    BeanUtils.copyProperties(student, studentFound, "id");
+    BeanUtils.copyProperties(student, studentFound, "id", "email", "cpfNumber");
 
     return studentRepository.save(studentFound);
   }

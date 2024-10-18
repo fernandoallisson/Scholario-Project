@@ -57,7 +57,7 @@ public class AdministratorService {
 
     userValidationDataService.validateAdmin(administrator);
 
-    BeanUtils.copyProperties(administrator, administratorFound, "id");
+    BeanUtils.copyProperties(administrator, administratorFound, "id", "email", "cpfNumber");
 
     return administratorRepository.save(administratorFound);
   }

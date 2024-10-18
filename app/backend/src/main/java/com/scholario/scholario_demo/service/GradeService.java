@@ -1,5 +1,6 @@
 package com.scholario.scholario_demo.service;
 
+import com.scholario.scholario_demo.dto.grade.GradeCreationDto;
 import com.scholario.scholario_demo.entiity.Grade;
 import com.scholario.scholario_demo.entiity.Student;
 import com.scholario.scholario_demo.entiity.Subject;
@@ -46,8 +47,6 @@ public class GradeService {
     Subject subject = subjectService.getSubjectById(subjectId);
     Student student = studentService.getStudentById(studentId);
 
-    grade.setGradeValue(grade.getGradeValue());
-    grade.setDate(grade.getDate());
     grade.setStudentGrades(student);
     grade.setSubjectGrades(subject);
 
@@ -66,16 +65,20 @@ public class GradeService {
     return gradeRepository.findByStudentGradesIdAndSubjectGradesId(studentId, subjectId);
   }
 
-  public Grade updateGrade(Long id, Grade grade) throws GradeNotFoundException {
-    Grade gradeFound = gradeRepository.findById(id).orElseThrow(
-        () -> new GradeNotFoundException("Grade not found")
-    );
-
-    if (gradeFound == null) {
-      return null;
+  public Grade updateGrade(Long id, GradeCreationDto gradeCreationDto) throws GradeNotFoundException {
+    if (id == null) {
+      throw new IllegalArgumentException("The given id must not be null");
     }
 
-      BeanUtils.copyProperties(grade, gradeFound, "id");
+    Grade gradeFound = getGradeById(id);
+
+    gradeFound.setDate(gradeCreationDto.date());
+    gradeFound.setFirstGrade(gradeCreationDto.firstGrade());
+    gradeFound.setSecondGrade(gradeCreationDto.secondGrade());
+    gradeFound.setThirdGrade(gradeCreationDto.thirdGrade());
+    gradeFound.setFourthGrade(gradeCreationDto.fourthGrade());
+    gradeFound.setYear(gradeCreationDto.year());
+
 
     return gradeRepository.save(gradeFound);
   }

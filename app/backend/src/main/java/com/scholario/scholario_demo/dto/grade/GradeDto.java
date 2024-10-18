@@ -11,7 +11,11 @@ public record GradeDto(
     String name,
     Long subjectId,
     String subjectName,
-    double gradeValue,
+    double firstGrade,
+    double secondGrade,
+    double thirdGrade,
+    double fourthGrade,
+    int year,
     String date) {
 
   /**
@@ -27,7 +31,11 @@ public record GradeDto(
         grade.getStudentGrades().getName(),
         grade.getSubjectGrades().getId(),
         grade.getSubjectGrades().getName(),
-        grade.getGradeValue(),
+        grade.getFirstGrade(),
+        grade.getSecondGrade(),
+        grade.getThirdGrade(),
+        grade.getFourthGrade(),
+        grade.getYear(),
         grade.getDate());
   }
 

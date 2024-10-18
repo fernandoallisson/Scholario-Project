@@ -145,7 +145,7 @@ public class gradeController {
         @PathVariable Long id, @RequestBody GradeCreationDto gradeCreationDto) {
     try {
       GradeDto updatedGrade = GradeDto.fromEntity(
-          gradeService.updateGrade(id, gradeCreationDto.toEntity()));
+          gradeService.updateGrade(id, gradeCreationDto));
       return ResponseEntity.ok(updatedGrade);
     } catch (GradeNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)

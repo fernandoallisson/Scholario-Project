@@ -100,7 +100,7 @@ public class TeacherController {
    * @return the response entity
    */
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('teacher')")
+  @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
   public ResponseEntity<?> updateTeacher(
       @PathVariable Long id,
       @RequestBody TeacherCreationDto teacherCreationDto) {
