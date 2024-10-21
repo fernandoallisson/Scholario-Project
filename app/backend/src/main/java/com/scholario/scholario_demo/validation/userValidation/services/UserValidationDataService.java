@@ -5,7 +5,6 @@ import com.scholario.scholario_demo.entiity.Student;
 import com.scholario.scholario_demo.entiity.Teacher;
 import com.scholario.scholario_demo.repository.UserRepository;
 import com.scholario.scholario_demo.validation.userValidation.exception.DataIntegrityException;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,6 +107,19 @@ public class UserValidationDataService {
     validateCpfNumber(student.getCpfNumber());
   }
 
+
+  public void validateStudentUpdate(Student student) {
+    validateName(student.getName());
+    validatePassword(student.getPassword());
+    validatePhone(student.getPhone());
+    validateAddress(student.getAddress());
+    validateBirthdate(student.getBirthdate());
+    validateColorRace(student.getColorRace());
+    validateBloodType(student.getBloodType());
+    validateNationality(student.getNationality());
+    validateSex(student.getSex());
+  }
+
   /**
    * Validate teacher.
    *
@@ -127,6 +139,19 @@ public class UserValidationDataService {
     validateCpfNumber(teacher.getCpfNumber());
     validateDepartment(teacher.getDepartment());
     validateHireDate(teacher.getHireDate());
+  }
+
+
+  public void validateTeacherUpdate(Teacher teacher) {
+    validateName(teacher.getName());
+    validatePassword(teacher.getPassword());
+    validatePhone(teacher.getPhone());
+    validateAddress(teacher.getAddress());
+    validateBirthdate(teacher.getBirthdate());
+    validateColorRace(teacher.getColorRace());
+    validateBloodType(teacher.getBloodType());
+    validateNationality(teacher.getNationality());
+    validateSex(teacher.getSex());
   }
 
   /**
@@ -149,6 +174,20 @@ public class UserValidationDataService {
     validateDepartmentAdm(administrator.getDepartment());
     validateHireDate(administrator.getHireDate());
   }
+
+  public void validateAdminUpdate(Administrator administrator) {
+    validateName(administrator.getName());
+    validatePassword(administrator.getPassword());
+    validatePhone(administrator.getPhone());
+    validateAddress(administrator.getAddress());
+    validateBirthdate(administrator.getBirthdate());
+    validateColorRace(administrator.getColorRace());
+    validateBloodType(administrator.getBloodType());
+    validateNationality(administrator.getNationality());
+    validateSex(administrator.getSex());
+  }
+
+
 
   // Validation methods
   private void validateName(String name) {

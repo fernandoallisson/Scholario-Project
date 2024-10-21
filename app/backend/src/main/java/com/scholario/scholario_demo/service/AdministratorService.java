@@ -55,7 +55,7 @@ public class AdministratorService {
       Long id, Administrator administrator) throws AdministratorFoundException {
     Administrator administratorFound = getAdministratorById(id);
 
-    userValidationDataService.validateAdmin(administrator);
+    userValidationDataService.validateAdminUpdate(administrator);
 
     BeanUtils.copyProperties(administrator, administratorFound, "id", "email", "cpfNumber");
 

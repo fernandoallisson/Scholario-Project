@@ -1,5 +1,6 @@
 package com.scholario.scholario_demo.globalAdvice;
 
+import com.scholario.scholario_demo.validation.paymentValidation.exception.PaymentIntegrityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,6 +40,12 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(DataIntegrityException.class)
   public ResponseEntity<String> handleDataIntegrityException(DataIntegrityException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(ex.getMessage());
+  }
+
+  @ExceptionHandler(PaymentIntegrityException.class)
+  public ResponseEntity<String> handlePaymentIntegrityException(PaymentIntegrityException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(ex.getMessage());
   }

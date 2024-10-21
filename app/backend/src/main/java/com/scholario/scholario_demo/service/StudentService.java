@@ -59,7 +59,7 @@ public class StudentService {
   public Student updateStudent(Long id, Student student) {
     Student studentFound = getStudentById(id);
 
-    userValidationDataService.validateStudent(student);
+    userValidationDataService.validateStudentUpdate(student);
 
     BeanUtils.copyProperties(student, studentFound, "id", "email", "cpfNumber");
 

@@ -62,7 +62,7 @@ public class TeacherService {
   public Teacher updateTeacher(Long id, Teacher teacher) {
     Teacher teacherFound = getTeacherById(id);
 
-    userValidationDataService.validateTeacher(teacher);
+    userValidationDataService.validateTeacherUpdate(teacher);
 
     BeanUtils.copyProperties(teacher, teacherFound, "id", "email", "cpfNumber");
 

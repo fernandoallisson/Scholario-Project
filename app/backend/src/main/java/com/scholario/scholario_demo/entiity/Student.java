@@ -41,6 +41,11 @@ public class Student extends User {
   @JoinColumn(name = "parent_id")
   private Parent parent;
 
+  @OneToMany(mappedBy = "studentPayments", cascade = CascadeType.ALL)
+  private List<Payment> payments = new ArrayList<>();
+
+
+
   /**
    * Instantiates a new Student.
    */
